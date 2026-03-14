@@ -1,0 +1,1 @@
+<table id="tabla-tickets" class="display w-full"></table>

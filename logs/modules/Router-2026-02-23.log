@@ -1,0 +1,7 @@
+{"timestamp":"2026-02-23 21:34:30","level":"MODULE","user":"guest","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/api\/login\/authenticate","message":"es Api: \/api\/login\/authenticate","context":[]}
+{"timestamp":"2026-02-23 21:37:58","level":"MODULE","user":"guest","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/api\/login\/authenticate","message":"es Api: \/api\/login\/authenticate","context":[]}
+{"timestamp":"2026-02-23 21:39:19","level":"MODULE","user":"guest","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/api\/login\/authenticate","message":"es Api: \/api\/login\/authenticate","context":[]}
+{"timestamp":"2026-02-23 22:06:30","level":"MODULE","user":"Erick Adrian Retes López","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/login\/authenticate","message":"Ruta ingresada inexistente, ruta: \/login\/authenticate","context":[]}
+{"timestamp":"2026-02-23 22:06:34","level":"MODULE","user":"Erick Adrian Retes López","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/login\/authenticate","message":"Ruta ingresada inexistente, ruta: \/login\/authenticate","context":[]}
+{"timestamp":"2026-02-23 22:51:43","level":"MODULE","user":"guest","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/auth\/login","message":"Ruta ingresada inexistente, ruta: \/auth\/login","context":[]}
+{"timestamp":"2026-02-23 22:52:02","level":"MODULE","user":"guest","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/auth\/login","message":"Ruta ingresada inexistente, ruta: \/auth\/login","context":[]}

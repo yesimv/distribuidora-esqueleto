@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# 🔹 Si el archivo físico existe, no redirigir
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# 🔹 Si el directorio físico existe, no redirigir
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# 🔹 Enviar TODO lo demás al router
+RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]

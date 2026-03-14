@@ -1,0 +1,9 @@
+{"timestamp":"2026-02-27 09:00:35","level":"MODULE","user":"Erick Adrian Retes López","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/empleados-asignados","message":"Ruta ingresada inexistente, ruta: \/empleados-asignados","context":[]}
+{"timestamp":"2026-02-27 09:32:10","level":"MODULE","user":"Erick Adrian Retes López","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/vacaciones-solicitar","message":"Ruta ingresada inexistente, ruta: \/vacaciones-solicitar","context":[]}
+{"timestamp":"2026-02-27 09:32:44","level":"MODULE","user":"Erick Adrian Retes López","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/perfil","message":"Ruta ingresada inexistente, ruta: \/perfil","context":[]}
+{"timestamp":"2026-02-27 09:32:49","level":"MODULE","user":"Erick Adrian Retes López","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/new-pwd","message":"Ruta ingresada inexistente, ruta: \/new-pwd","context":[]}
+{"timestamp":"2026-02-27 10:52:28","level":"MODULE","user":"Erick Adrian Retes López","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/DISTRIBUIDORAFINAL\/login\/logout","message":"Ruta ingresada inexistente, ruta: \/DISTRIBUIDORAFINAL\/login\/logout","context":[]}
+{"timestamp":"2026-02-27 11:13:57","level":"MODULE","user":"guest","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/olvide","message":"Ruta ingresada inexistente, ruta: \/olvide","context":[]}
+{"timestamp":"2026-02-27 11:16:23","level":"MODULE","user":"guest","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/olvide","message":"Ruta ingresada inexistente, ruta: \/olvide","context":[]}
+{"timestamp":"2026-02-27 11:29:05","level":"MODULE","user":"guest","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/olvide","message":"Ruta ingresada inexistente, ruta: \/olvide","context":[]}
+{"timestamp":"2026-02-27 12:02:08","level":"MODULE","user":"guest","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/api\/forget","message":"Ruta ingresada inexistente, ruta: \/forget","context":[]}

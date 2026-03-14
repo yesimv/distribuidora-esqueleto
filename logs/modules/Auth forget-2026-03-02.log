@@ -1,0 +1,2 @@
+{"timestamp":"2026-03-02 09:23:52","level":"MODULE","user":"guest","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/api\/forget","message":"Datos obtenidos al solicitar recuperacion ","context":{"success":true,"message":"Se enviaron las instrucciones correctamente."}}
+{"timestamp":"2026-03-02 09:24:56","level":"MODULE","user":"guest","ip":"::1","url":"\/DISTRIBUIDORAFINAL\/api\/forget","message":"Datos obtenidos al solicitar recuperacion del correo: erickretes10@gmail.com","context":{"success":true,"message":"Se enviaron las instrucciones correctamente."}}
