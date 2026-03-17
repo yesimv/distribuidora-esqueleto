@@ -75,17 +75,15 @@ function llenarSelect(selectId, datos, idCampo, textoCampo) {
 const crearTicket = async () =>{
 
     const titulo = document.querySelector('input[type="text"]').value;
+    const adjunto_form = document.getElementById("adjunto-form").value;
+    const comentarios = document.getElementById("comentariosInput").value;
+    const en_tiempo = document.getElementById("enTiempo").value;
 
     const id_departamento = document.getElementById("departamentoSelect").value;
-
     const id_estacion = document.getElementById("estacionSelect").value;
-
     const id_tipo = document.getElementById("tipoSelect").value;
-
     const id_prioridad = document.getElementById("prioridadSelect").value;
-
     const id_categoria = document.getElementById("categoriaSelect").value;
-
     const descripcion = document.querySelector('textarea').value;
 
     const data = {
@@ -109,7 +107,7 @@ const crearTicket = async () =>{
 /* 
 Dropzone.autoDiscover = false;
 
-const uploader = new Dropzone("#demo-upload", {
+const uploader = new Dropzone("#adjunto-form", {
 
     url: "/upload",
 
