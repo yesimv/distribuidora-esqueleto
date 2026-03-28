@@ -11,5 +11,10 @@ class AnalisisController extends BaseController
         
      $this->view('analisis/index',['pageName' => 'Análisis Técnicos']);     
     }
+    public function create()
+    {
+
+        $this->view('analisis/nuevo-analisis', ['pageName' => 'Análisis Técnico']);
+    }
 
 }

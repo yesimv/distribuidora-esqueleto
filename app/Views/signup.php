@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -20,7 +20,7 @@
     <div
   x-show="loaded"
   x-init="window.addEventListener('DOMContentLoaded', () => {setTimeout(() => loaded = false, 500)})"
-  class="fixed left-0 top-0 z-999999 flex h-screen w-screen items-center justify-center bg-white dark:bg-black"
+  class="fixed left-0 top-0z-9 flex h-screen w-screen items-center justify-center bg-white dark:bg-black"
 >
   <div
     class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-brand-500 border-t-transparent"
@@ -36,30 +36,7 @@
       >
         <!-- Form -->
         <div class="flex flex-col flex-1 w-full lg:w-1/2">
-          <div class="w-full max-w-md pt-5 mx-auto sm:py-10">
-            <a
-              href="/index"
-              class="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-            >
-              <svg
-                class="stroke-current"
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-              >
-                <path
-                  d="M12.7083 5L7.5 10.2083L12.7083 15.4167"
-                  stroke=""
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              Back to dashboard
-            </a>
-          </div>
+
           <div
             class="flex flex-col justify-center flex-1 w-full max-w-md mx-auto"
           >
@@ -303,11 +280,11 @@
                 <p
                   class="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start"
                 >
-                  Already have an account?
+                  ¿Ya tienes una cuenta?
                   <a
                     href="/signin"
                     class="text-brand-500 hover:text-brand-600 dark:text-brand-400"
-                    >Sign In</a
+                    >Iniciar Sesión</a
                   >
                 </p>
               </div>
@@ -330,10 +307,10 @@
 
             <div class="flex flex-col items-center max-w-xs">
               <a href="/index" class="block mb-4">
-                <img src="assets/img/logo/auth-logo.svg" alt="Logo" />
+                <img src="assets/img/logo/masterfuel_connect_blanco.png" alt="Logo" />
               </a>
               <p class="text-center text-gray-400 dark:text-white/60">
-                Free and Open-Source Tailwind CSS Admin Dashboard Template
+                Sistema de tickets
               </p>
             </div>
           </div>

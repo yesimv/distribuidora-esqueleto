@@ -14,15 +14,17 @@ class TicketController extends BaseController
     public function create()
     {
 
-        $this->view('tickets/create-ticket', ['pageName' => 'Tickets']);
+        $this->view('tickets/nuevo-ticket', ['pageName' => 'Tickets']);
     }
     public function dataTable()
     {
 
         $this->view('tickets/data-table', ['pageName' => 'Tickets']);
     }
-
-
-
+    public function editar()
+    {   
+        $this->view('tickets/componentes/editar-ticket', ['pageName' => 'Tickets']);
+      
+    }
 
 }

@@ -29,7 +29,7 @@
                             <div class="flex items-center">
                               <p
                                 class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                Project Name
+                                Proyecto Name
                               </p>
                             </div>
                           </th>
@@ -137,7 +137,7 @@
                                   </span>
                                   <span
                                     class="block text-gray-500 text-theme-xs dark:text-gray-400">
-                                    Project Manager
+                                    Proyecto Manager
                                   </span>
                                 </div>
                               </div>

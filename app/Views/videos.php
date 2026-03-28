@@ -3,7 +3,7 @@ use Core\Auth;
 Auth::isAuth();
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -24,7 +24,7 @@ Auth::isAuth();
     <div
   x-show="loaded"
   x-init="window.addEventListener('DOMContentLoaded', () => {setTimeout(() => loaded = false, 500)})"
-  class="fixed left-0 top-0 z-999999 flex h-screen w-screen items-center justify-center bg-white dark:bg-black"
+  class="fixed left-0 top-0z-9 flex h-screen w-screen items-center justify-center bg-white dark:bg-black"
 >
   <div
     class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-brand-500 border-t-transparent"
@@ -47,10 +47,10 @@ Auth::isAuth();
   >
     <a href="/index">
       <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
-        <img class="dark:hidden" src="assets/img/logo/logo.svg" alt="Logo" />
+        <img class="dark:hidden" src="assets/img/logo/masterfuel_connect.png" alt="Logo" />
         <img
           class="hidden dark:block"
-          src="assets/img/logo/logo-dark.svg"
+          src="assets/img/logo/masterfuel_connect_blanco.png"
           alt="Logo"
         />
       </span>
@@ -58,7 +58,7 @@ Auth::isAuth();
       <img
         class="logo-icon"
         :class="sidebarToggle ? 'lg:block' : 'hidden'"
-        src="assets/img/logo/logo-icon.svg"
+        src="assets/img/logo/Favicon_master_gota_blanco.png"
         alt="Logo"
       />
     </a>
@@ -770,7 +770,7 @@ Auth::isAuth();
                     class="menu-dropdown-item group"
                     :class="page === 'signin' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
                   >
-                    Sign In
+                    Iniciar Sesión
                   </a>
                 </li>
                 <li>
@@ -833,7 +833,7 @@ Auth::isAuth();
         <!-- ===== Header Start ===== -->
         <header
   x-data="{menuToggle: false}"
-  class="sticky top-0 z-99999 flex w-full border-gray-200 bg-white lg:border-b dark:border-gray-800 dark:bg-gray-900"
+  class="sticky top-0z- flex w-full border-gray-200 bg-white lg:border-b dark:border-gray-800 dark:bg-gray-900"
 >
   <div
     class="flex grow flex-col items-center justify-between lg:flex-row lg:px-6"
@@ -901,10 +901,10 @@ Auth::isAuth();
       <!-- Hamburger Toggle BTN -->
 
       <a href="/index" class="lg:hidden">
-        <img class="dark:hidden" src="assets/img/logo/logo.svg" alt="Logo" />
+        <img class="dark:hidden" src="assets/img/logo/masterfuel_connect.png" alt="Logo" />
         <img
           class="hidden dark:block"
-          src="assets/img/logo/logo-dark.svg"
+          src="assets/img/logo/masterfuel_connect_blanco.png"
           alt="Logo"
         />
       </a>
@@ -1110,16 +1110,16 @@ Auth::isAuth();
                       <span class="font-medium text-gray-800 dark:text-white/90"
                         >Terry Franci</span
                       >
-                      requests permission to change
+                      solicita permiso para cambiar
                       <span class="font-medium text-gray-800 dark:text-white/90"
-                        >Project - Nganter App</span
+                        >Proyecto - Nganter App</span
                       >
                     </span>
 
                     <span
                       class="text-theme-xs flex items-center gap-2 text-gray-500 dark:text-gray-400"
                     >
-                      <span>Project</span>
+                      <span>Proyecto</span>
                       <span class="h-1 w-1 rounded-full bg-gray-400"></span>
                       <span>5 min ago</span>
                     </span>
@@ -1152,16 +1152,16 @@ Auth::isAuth();
                       <span class="font-medium text-gray-800 dark:text-white/90"
                         >Alena Franci</span
                       >
-                      requests permission to change
+                      solicita permiso para cambiar
                       <span class="font-medium text-gray-800 dark:text-white/90"
-                        >Project - Nganter App</span
+                        >Proyecto - Nganter App</span
                       >
                     </span>
 
                     <span
                       class="text-theme-xs flex items-center gap-2 text-gray-500 dark:text-gray-400"
                     >
-                      <span>Project</span>
+                      <span>Proyecto</span>
                       <span class="h-1 w-1 rounded-full bg-gray-400"></span>
                       <span>8 min ago</span>
                     </span>
@@ -1194,16 +1194,16 @@ Auth::isAuth();
                       <span class="font-medium text-gray-800 dark:text-white/90"
                         >Jocelyn Kenter</span
                       >
-                      requests permission to change
+                      solicita permiso para cambiar
                       <span class="font-medium text-gray-800 dark:text-white/90"
-                        >Project - Nganter App</span
+                        >Proyecto - Nganter App</span
                       >
                     </span>
 
                     <span
                       class="text-theme-xs flex items-center gap-2 text-gray-500 dark:text-gray-400"
                     >
-                      <span>Project</span>
+                      <span>Proyecto</span>
                       <span class="h-1 w-1 rounded-full bg-gray-400"></span>
                       <span>15 min ago</span>
                     </span>
@@ -1236,16 +1236,16 @@ Auth::isAuth();
                       <span class="font-medium text-gray-800 dark:text-white/90"
                         >Brandon Philips</span
                       >
-                      requests permission to change
+                      solicita permiso para cambiar
                       <span class="font-medium text-gray-800 dark:text-white/90"
-                        >Project - Nganter App</span
+                        >Proyecto - Nganter App</span
                       >
                     </span>
 
                     <span
                       class="text-theme-xs flex items-center gap-2 text-gray-500 dark:text-gray-400"
                     >
-                      <span>Project</span>
+                      <span>Proyecto</span>
                       <span class="h-1 w-1 rounded-full bg-gray-400"></span>
                       <span>1 hr ago</span>
                     </span>
@@ -1278,16 +1278,16 @@ Auth::isAuth();
                       <span class="font-medium text-gray-800 dark:text-white/90"
                         >Terry Franci</span
                       >
-                      requests permission to change
+                      solicita permiso para cambiar
                       <span class="font-medium text-gray-800 dark:text-white/90"
-                        >Project - Nganter App</span
+                        >Proyecto - Nganter App</span
                       >
                     </span>
 
                     <span
                       class="text-theme-xs flex items-center gap-2 text-gray-500 dark:text-gray-400"
                     >
-                      <span>Project</span>
+                      <span>Proyecto</span>
                       <span class="h-1 w-1 rounded-full bg-gray-400"></span>
                       <span>5 min ago</span>
                     </span>
@@ -1320,16 +1320,16 @@ Auth::isAuth();
                       <span class="font-medium text-gray-800 dark:text-white/90"
                         >Alena Franci</span
                       >
-                      requests permission to change
+                      solicita permiso para cambiar
                       <span class="font-medium text-gray-800 dark:text-white/90"
-                        >Project - Nganter App</span
+                        >Proyecto - Nganter App</span
                       >
                     </span>
 
                     <span
                       class="text-theme-xs flex items-center gap-2 text-gray-500 dark:text-gray-400"
                     >
-                      <span>Project</span>
+                      <span>Proyecto</span>
                       <span class="h-1 w-1 rounded-full bg-gray-400"></span>
                       <span>8 min ago</span>
                     </span>
@@ -1362,16 +1362,16 @@ Auth::isAuth();
                       <span class="font-medium text-gray-800 dark:text-white/90"
                         >Jocelyn Kenter</span
                       >
-                      requests permission to change
+                      solicita permiso para cambiar
                       <span class="font-medium text-gray-800 dark:text-white/90"
-                        >Project - Nganter App</span
+                        >Proyecto - Nganter App</span
                       >
                     </span>
 
                     <span
                       class="text-theme-xs flex items-center gap-2 text-gray-500 dark:text-gray-400"
                     >
-                      <span>Project</span>
+                      <span>Proyecto</span>
                       <span class="h-1 w-1 rounded-full bg-gray-400"></span>
                       <span>15 min ago</span>
                     </span>
@@ -1404,16 +1404,16 @@ Auth::isAuth();
                       <span class="font-medium text-gray-800 dark:text-white/90"
                         >Brandon Philips</span
                       >
-                      requests permission to change
+                      solicita permiso para cambiar
                       <span class="font-medium text-gray-800 dark:text-white/90"
-                        >Project - Nganter App</span
+                        >Proyecto - Nganter App</span
                       >
                     </span>
 
                     <span
                       class="text-theme-xs flex items-center gap-2 text-gray-500 dark:text-gray-400"
                     >
-                      <span>Project</span>
+                      <span>Proyecto</span>
                       <span class="h-1 w-1 rounded-full bg-gray-400"></span>
                       <span>1 hr ago</span>
                     </span>

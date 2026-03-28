@@ -9,6 +9,7 @@ class ApiClient
     private string $baseUrl;
     private array $headers = [];
 
+    //con este se decide a que api se enviara la peticion
     public function __construct(string $api)
     {
         $this->baseUrl = match ($api) {
@@ -19,31 +20,40 @@ class ApiClient
             default => throw new \Exception("API no definida")
         };
 
+        //header por defecto
         $this->headers = [
             "Content-Type: application/x-www-form-urlencoded"
         ];
 
-        // 🔥 Agregamos Bearer automáticamente
+        //   Agregamos Bearer automáticamente  
         if (!empty($_SESSION['bearer_token'])) {
             $this->headers[] = "Authorization: Bearer " . $_SESSION['bearer_token'];
         }
     }
 
+    //metodo principal para hacer peticiones
     public function request(string $method, string $endpoint, array $data = [], bool $formData = true)
     {
         $url = rtrim($this->baseUrl, '/') . '/' . ltrim($endpoint, '/');
-
+        //inicializa la conexion
         $ch = curl_init();
-
+        //se define como sera la peticion
         curl_setopt_array($ch, [
+            //endpoint al que se envia la peticion
             CURLOPT_URL            => $url,
+            //si es tru la respuesta se guarda en $response y no se imprime directo
             CURLOPT_RETURNTRANSFER => true,
+            //se define si sera un GET, POST etc
             CURLOPT_CUSTOMREQUEST  => strtoupper($method),
+            //aqui se envian los datos en json ej. correo y contraseña para iniciar sesion
             CURLOPT_POSTFIELDS     => $formData ? http_build_query($data) : json_encode($data),
+            // aqui se le dice a la api que envias
             CURLOPT_HTTPHEADER     => $this->headers,
+            //defines tiempo de espera
             CURLOPT_TIMEOUT        => 30,
         ]);
 
+        //esta es la peticion real
         $response = curl_exec($ch);
 
         if (curl_errno($ch)) {
@@ -59,6 +69,7 @@ class ApiClient
 
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
+        //cierra la conexion
         curl_close($ch);
 
         Logger::php("Respuesta API", [

@@ -1,90 +1,267 @@
+//limpia las celdas que no tienen empleado asignado
+function limpiarExport(data) {
+
+    let texto = data.replace(/<[^>]*>?/gm, '').trim();
+
+    if (
+        texto.includes('Asignar') ||
+        texto.includes('Asignármelo') ||
+        texto === ''
+    ) {
+        return 'Sin asignar';
+    }
+
+    return texto;
+}
 export function tabla(nombreTabla, columnas, dataSource, extras = null) {
     if (DataTable.isDataTable(nombreTabla)) {
         new DataTable(nombreTabla).destroy();
     }
 
+    //validacion de tablas si existe o no
+    // if (!tablaTickets){
+    //     console.error('tabla inexistente: '+nombreTabla);
+    //     return
+    // } 
+
+
     try {
         const tablaElement = document.querySelector(nombreTabla);
-
-
-
-
-
         const cols = [...columnas];
         /*si se define el uso de los botones de accion*/
-        if (extras && extras.includes('Acciones')) {
-            tablaElement.addEventListener('click', (e) => {
-                /* const celda = e.target.closest('td');
-                console.log('Celda:', celda); */
+        if (extras && extras.includes('AccionesTicket')) {
+            cols.push(
+                {
+                    data: 'estatus', title: 'Estatus',
+                    render: function (data, type, row) {
+                        let accionesEstatus = '';
+                        const puedeVer = row.puede_ver_asignacion;
+                        const esJefe = row.es_jefe_depto == true;
+                        const estatus = row.estatus_list || [];
 
+                        if (!puedeVer || row.id_estatus == 3 || row.id_estatus == 4 || row.id_estatus == 5) {
 
-                const btnView = e.target.closest('.btn-view');
-                const btnCancel = e.target.closest('.btn-cancel');
+                            accionesEstatus = `<span  class="${row.estatus_class}">${row.estatus}</span>`;
 
-                if (btnView) {
-                    const id = btnView.dataset.id;
-                    console.log("Ver ticket", id);
-                }
+                        } else if (row.id_estatus == 1 || row.id_estatus == 2){
 
-                if (btnCancel) {
-                    const id = btnCancel.dataset.id;
-                    console.log("Cancelar ticket", id);
-                }
-            });
+                            if(esJefe || row.id_empleado_asi == window.id_empleado){
+                                accionesEstatus = `
+                                    <div 
+                                    
+                                    class="min-w-[120px] relative custom-select estatus-select"
+                                    data-id="${row.id_ticket}"
+                                    data-depto="${row.id_departamento_asi}
+                                     data-actual="${row.estatus}"
+                                    >
+                                    
+                                    <!-- BOTÓN -->
+                                    <button
+                                        type="button"
+                                        class=" select-estatus-btn  text-left flex justify-between items-center  ${row.estatus_class}"
+                                    >
+                                        <span class="selected-estatus">${row.estatus}</span>
+                                        <span>▾</span>
+                                    </button>
 
-            cols.push({
-                title: 'Acciones',
-                data: null,
-                orderable: false,
-                render: function (data, type, row) {
+                                    <!-- OPCIONES -->
+                                    <div class="select-options hidden absolute z-50 mt-1 w-full bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-xl shadow-lg max-h-60 overflow-auto">
+                                        
+                                        ${estatus.map(est => `
+                                        <div 
+                                            class="option px-3 py-2 cursor-pointer hover:bg-gray-100 color-gray dark:hover:bg-gray-850"
+                                            data-value="${est.id_estatus}"
+                                        >
+                                            <p>${est.descripcion}</p>
+                                        </div>
+                                        `).join('')}
 
-                    return `
+                                    </div>
+                                    </div>
+                            `;
+
+                            }
+                        }
+                        return `<div data-estatus="${row.estatus}">
+                                    ${accionesEstatus}
+                                </div>`;
+                    }
+                        
+                },
+                // se agrega el campo de empleado asignado
+                {
+                    data: 'empleado_asignado', title: 'Empleado asignado',
+                    render: function (data, type, row) {
+
+                        let accionesAsignacion = '';
+
+                        const puedeVer = row.puede_ver_asignacion;
+                        const noAsignado = row.id_empleado_asi == null;
+                        const esJefe = row.es_jefe_depto == true;
+                        const empleados = row.empleados_departamento || [];
+
+                        if (!puedeVer || row.id_estatus == 3 || row.id_estatus == 4 || row.id_estatus == 5) {
+
+                            accionesAsignacion = `<span>${row.empleado_asignado}</span>`;
+
+                        } else if (noAsignado) {
+
+                            if (esJefe) {
+                                accionesAsignacion = `
+                                    <div 
+                                    
+                                    class="min-w-[120px] custom-select relative asignado-select"
+                                    data-id="${row.id_ticket}"
+                                    data-depto="${row.id_departamento_asi}"
+                                    >
+                                    
+                                    <!-- BOTÓN -->
+                                    <button
+                                        type="button"
+                                        class=" select-asignado-btn btn-light-light-mini text-left flex justify-between items-center"
+                                    >
+                                        <span class="selected-asignado text-gray-500">Asignar a...</span>
+                                        <span>▾</span>
+                                    </button>
+
+                                    <!-- OPCIONES -->
+                                    <div class="select-options hidden absolute z-50 mt-1 w-full bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-xl shadow-lg max-h-60 overflow-auto">
+                                        
+                                        ${empleados.map(emp => `
+                                        <div 
+                                            class="option px-3 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-850"
+                                            data-value="${emp.id_empleado}"
+                                        >
+                                            ${emp.nombre}
+                                        </div>
+                                        `).join('')}
+
+                                    </div>
+                                    </div>
+                            `;
+                            } else {
+                                accionesAsignacion = `
+                              <button class="btn-success-light-mini btn-asignarme action-btn "
+                                data-id="${row.id_ticket}"
+                                >
+                                Asignármelo
+                              </button>
+                            `;
+                            }
+
+                        } else {
+
+                            accionesAsignacion = `<span>${row.empleado_asignado}</span>`;
+                        }
+
+                        return `<div data-empleado="${row.empleado_asignado || 'Sin asignar'}">
+                                    ${accionesAsignacion}
+                                </div>`;
+                    }
+
+                },
+                //se agregan las Acciones de tickets
+                {
+                    title: 'Acciones',
+                    data: null,
+                    orderable: false,
+                    className: 'no-export',
+                    render: function (data, type, row) {
+
+                        return `
                         <div class="flex gap-2">
-
+                            <button class="btn-view group action-btn" data-tooltip="Ver Ticket" data-id="${row.id_ticket}">
                         
-                        
-
-                        <button class="btn-view group action-btn" data-tooltip="Ver Ticket" data-id="${row.id_ticket}">
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="#d97706">
-<path d="M200-200h57l391-391-57-57-391 391v57Zm-80 
-80v-170l528-528q12-12 27-18t31-6q16 0 31 
-6t27 18l57 57q12 12 18 27t6 31q0 16-6 
-31t-18 27L290-120H120Zm640-584-56-56 56 
-56ZM591-620l-28-28 57 57-29-29Z"/>
-</svg>
-                        </button>
-                        
-
-                        <button class="btn-cancel group action-btn" data-tooltip="Borrar Ticket"
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="#d97706">
+                                <path d="M200-200h57l391-391-57-57-391 391v57Zm-80 
+                                80v-170l528-528q12-12 27-18t31-6q16 0 31 
+                                6t27 18l57 57q12 12 18 27t6 31q0 16-6 
+                                31t-18 27L290-120H120Zm640-584-56-56 56 
+                                56ZM591-620l-28-28 57 57-29-29Z"/>
+                                </svg>
+                            </button>
+                            <button class="btn-borrar group action-btn" data-tooltip="Borrar Ticket"
                             data-id="${row.id_ticket}"
                             data-message="¿Seguro que deseas borrar este elemento?">
                             
-                           <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="#c20e1a">
-<path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 
-33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 
-0h80v-360h-80v360Z"/>
-</svg>
-                        </button>
-                        
-
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="#c20e1a">
+                                <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 
+                                33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 
+                                0h80v-360h-80v360Z"/>
+                                </svg>
+                            </button>
                         </div>
                     `;
 
+                    }
+
+                },);
+
+        } else if (extras && extras.includes('AccionesAnalisis')) {
+            cols.push(
+                //se agregan las Acciones de Analisis
+                // se agrega el campo de empleado asignado
+                {
+                    data: null, title: 'ID Ticket',
+
+                    orderable: false,
+                    className: 'no-export',
+                    render: function (data, type, row) {
+
+                        return `
+                        <div class="flex gap-2">
+                            <button class="flex btn-view group action-btn" data-tooltip="Ver Ticket" data-id="${row.id_ticket}">
+                                <p>${row.id_ticket}</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="#d97706">
+                                <path d="M200-200h57l391-391-57-57-391 391v57Zm-80 
+                                80v-170l528-528q12-12 27-18t31-6q16 0 31 
+                                6t27 18l57 57q12 12 18 27t6 31q0 16-6 
+                                31t-18 27L290-120H120Zm640-584-56-56 56 
+                                56ZM591-620l-28-28 57 57-29-29Z"/>
+                                </svg>
+                            </button>
+                            
+                        </div>
+                    `;
+
+
+                    }
+
                 }
-
-            },);
-
+            )
         };
 
-        
-        new DataTable(nombreTabla, {
 
-            lengthMenu: [5, 10, 25, -1],
+        const dt = new DataTable(nombreTabla, {
+
+
+            order: [[0, 'desc']], // columna 0 en descendente
+            lengthMenu: [10, 20, 30, -1],
             buttons: [
-                { extend: 'copy', className: 'btn-primary-light-mini' },
-                { extend: 'excel', className: 'btn-primary-light-mini' },
-                { extend: 'pdf', className: 'btn-primary-light-mini' }
+                {
+                    extend: 'copy',
+                    className: 'btn-primary-light-mini',
+                    exportOptions: {
+                        //elimina celdas de 'acciones' al exportar
+                        columns: ':not(.no-export)',
+                        //traer empleado asignado limpio
+                        format: { body: limpiarExport }
+                    }
+                },
+                {
+                    extend: 'excel', className: 'btn-primary-light-mini',
+                    exportOptions: {
+                        columns: ':not(.no-export)',
+                        format: { body: limpiarExport }
+                    }
+                },
+                {
+                    extend: 'pdf', className: 'btn-primary-light-mini',
+                    exportOptions: {
+                        columns: ':not(.no-export)',
+                        format: { body: limpiarExport }
+                    }
+                }
             ],
             dom: '<"flex justify-between items-center mb-2"lBf>rt<"flex justify-between items-center "ip>',
             language: {
@@ -98,7 +275,8 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
             },
 
             columns: cols,
-            data: dataSource
+            data: dataSource,
+
 
         });
         document.querySelectorAll('.dt-column-header')
@@ -108,6 +286,7 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
             .forEach(el => el.classList.add('input-datatable'));
 
 
+        return dt;
     } catch (error) {
         console.error('Error detectado', error)
     }

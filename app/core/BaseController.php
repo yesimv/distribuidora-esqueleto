@@ -86,7 +86,7 @@ class BaseController
             echo $content;
             return;
         }
-
+       
         require ROOT . "/app/Views/layout/app.php";
     }
 

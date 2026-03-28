@@ -170,7 +170,7 @@
 
                                   <button
                                     
-                                    class=" relative group w-max btn-cancel"
+                                    class=" relative group w-max btn-borrar"
                                     data-id="<?= $elemento['id_ticket']; ?>"
                                     data-message="¿Seguro que deseas cancelar este ticket?">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#c20e1a">

@@ -31,7 +31,6 @@ return [
             'controller' => [TicketController::class, 'create'],
             'middleware' => ['auth']
         ],
-        
         '/tickets' => [
             'controller' => [TicketController::class, 'index'],
             'middleware' => ['auth']
@@ -44,12 +43,10 @@ return [
             'controller' => [AnalisisController::class, 'index'],
             'middleware' => ['auth']
         ],
-        
-        
-        
-
-
-
+        '/analisis-create' => [
+            'controller' => [AnalisisController::class, 'create'],
+            'middleware' => ['auth']
+        ],
         '/form-example' => [
             'controller' => [ComponentController::class, 'form'],
             'middleware' => ['auth']
@@ -66,42 +63,11 @@ return [
             'controller' => [ComponentController::class, 'profile'],
             'middleware' => ['auth']
         ],
-
-        // '/forget'=>[
-        //     'controller' => [AuthController::class, 'forget'],
-        //     'middleware' => ['guest']
-        // ],
-
-        // '/restablecer'=>[
-        //     'controller' => [AuthController::class, 'restart'],
-        //     'middleware' => ['guest']
-        // ],
-
-        // '/new-pwd'=>[
-        //     'controller' => [AuthController::class, 'restartPwd'],
-        //     'middleware' => ['auth']
-        // ],
-
-        // '/perfil'=>[
-        //     'controller' => [AuthController::class, 'perfil'],
-        //     'middleware' => ['auth']
-        // ],
-
-        // '/vacaciones-solicitar'=>[
-        //     'controller' => [VacacionesController::class, 'index'],
-        //     'middleware' => ['auth']
-        // ],
-
-        // '/vacaciones-nomina'=>[
-        //     'controller' => [VacacionesController::class, 'nomina'],
-        //     'middleware' => ['auth']
-        // ],
-
-        // '/vacaciones-conta'=>[
-        //     'controller' => [VacacionesController::class, 'contabilidad'],
-        //     'middleware' => ['auth']
-        // ],
-
+        '/ticket-editar' => [
+            'controller' => [TicketController::class, 'editar'],
+            'middleware' => ['auth']
+        ],
+        
     ],
 
 

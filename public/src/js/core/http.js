@@ -1,4 +1,4 @@
-
+import {loader} from './loader.js';
 /**
  * Realiza una petición HTTP usando fetch
  * @param {string} url - Ruta a la que se enviará la petición
@@ -17,6 +17,7 @@ export async function request(url, method = "GET", data = null) {
         options.body = JSON.stringify(data);
     }
     try {
+        loader.show(); // muestra la ventana de carga
         // Construir URL correctamente: Asegurar que haya barra entre BASE_URL y url
         // let finalUrl = CONFIG['BASE_URL'];
         // if (finalUrl && !finalUrl.endsWith('/')) {
@@ -37,5 +38,7 @@ export async function request(url, method = "GET", data = null) {
     } catch (error) {
         console.error("HTTP Error:", error);
         throw error;
+    }finally{
+         loader.hide();
     }
 }

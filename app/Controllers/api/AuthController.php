@@ -6,6 +6,7 @@ use App\Core\BaseController;
 use App\Core\Config;
 use App\Services\AuthService;
 use App\Core\Logger;
+use App\Services\TicketService;
 
 
 class AuthController extends BaseController
@@ -36,20 +37,38 @@ class AuthController extends BaseController
         $authService = $this->authService;
 
         $result = $authService->authenticate($data);
-           
+
         if (!$result['success']) {
             return $this->error($result['message'] ?? "Error desconocido");
         }
 
-        $_SESSION['bearer_token'] = $result['user']['bearer_token'] ?? null;//!
+        $_SESSION['bearer_token'] = $result['user']['bearer_token'] ?? null; //!
         $_SESSION['username']      = $result['user']['username'] ?? null;
+        $_SESSION['email_user']= $email;
         $_SESSION['id_empleado']      = $result['user']['id_empleado'] ?? [];
+        $_SESSION['id_departamento']      = $result['user']['id_departamento'] ?? [];
         $_SESSION['id_user']      = $result['user']['id_user'] ?? [];
-        $_SESSION['id_superuser']      = $result['user']['id_superuser'] ?? [];
+        $_SESSION['is_superuser']      = $result['user']['is_superuser'] ?? [];
         $_SESSION['permisoadministrativo']      = $result['user']['permisos']['apiadministrativo']['tipo'] ?? [];
         $_SESSION['permisogdt']      = $result['user']['permisos']['apigdt']['rol'] ?? [];
         $_SESSION['tipo_entidad']      = $result['user']['tipo_entidad'] ?? [];
         $_SESSION['modulos']      = $result['user']['modulos'] ?? [];
+        $_SESSION['id_estacion'] = $result['user']['id_estacion'] ?? [];
+        // Calculas UNA sola vez
+
+        $deptosAsignados = TicketService::isCoordinador()['body']['resultado'] ?? [];
+
+        if (!is_array($deptosAsignados)) {
+            $deptosAsignados = [];
+        }
+
+        $_SESSION['deptos_coordinador'] = $deptosAsignados;
+        $_SESSION['es_coordinador'] = !empty($deptosAsignados);
+        
+
+        
+
+
 
         Logger::module("AuthService", "Datos obtenidos al loguear ", $result);
 
@@ -76,7 +95,7 @@ class AuthController extends BaseController
             return $this->error($result['message'] ?? "Error desconocido");
         }
 
-        Logger::module("Auth forget", "Datos obtenidos al solicitar recuperacion del correo: ".$email, $result);
+        Logger::module("Auth forget", "Datos obtenidos al solicitar recuperacion del correo: " . $email, $result);
         $this->json($result);
     }
 
@@ -97,10 +116,11 @@ class AuthController extends BaseController
         $this->json($result);
     }
 
-    public function login(){
+    public function login()
+    {
         $this->validateMethod('POST');
         $datos = $this->getJsonInput();
-        $response =$this->authService->login($datos);
+        $response = $this->authService->login($datos);
         $_SESSION['bearer_token'] = $response['body']['resultado']['user']['bearer_token'] ?? null;
         $_SESSION['username']      = $response['body']['resultado']['user']['username'] ?? null;
         $_SESSION['id_empleado']      = $response['body']['resultado']['user']['id_empleado'] ?? [];
@@ -114,26 +134,24 @@ class AuthController extends BaseController
         $this->json($response);
     }
 
-    public function logout(){
+    public function logout()
+    {
         $this->validateMethod('GET');
-        if(!isset($_SESSION['bearer_token'])){
+        if (!isset($_SESSION['bearer_token'])) {
             return $this->error($result['message'] ?? "No hay sesion activa");
         }
         // $result = $this->authService->logout($_SESSION['bearer_token']);
         $result = $this->authService->logOut();
-        
-       
+
+
         Logger::module("AuthService", "Datos obtenidos al cerrar sesion: ", $result);
 
         session_unset();
         session_destroy();
-        header("Location:".Config::get('app.base_url')."/");
-        
+        header("Location:" . Config::get('app.base_url') . "/");
+
         exit;
-
-
     }
-    
 }
 
 

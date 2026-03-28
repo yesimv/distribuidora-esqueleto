@@ -1,0 +1,1 @@
+{"timestamp":"2026-03-26 11:17:38","level":"MODULE","user":"guest","ip":"::1","url":"\/prueba\/distribuidora-esqueleto\/api\/login","message":"Error al obtener datos de la Api en la ruta auth\/login, error: Error al conectar con API","context":[]}

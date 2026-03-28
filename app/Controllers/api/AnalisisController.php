@@ -26,5 +26,27 @@ class AnalisisController extends BaseController
         
         $this->json($result);
     }
+    public function date()
+    {
+        
+        $this->validateMethod('POST');
+        $data = $this->getJsonInput();  //atrapa los datos que le mandaste en el POST
+        $analisisService = $this->analisisService;
+        $result = $analisisService->rangoFecha($data);
+        
+        
+        $this->json($result);
+    }
+    //se traen todos los valores posibles para el formulario de analisis
+    public function formData()
+    {
+        $this->validateMethod('GET');
+        $data = $this->getJsonInput();  //atrapa los datos que le mandaste en el POST
+
+        $analisisService = $this->analisisService;
+        $result = $analisisService->formData($data);
+
+        $this->json($result);
+    }
     
 }
