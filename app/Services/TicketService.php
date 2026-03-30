@@ -44,21 +44,18 @@ class TicketService
                     'tiempo_estimado' => $tiempo,
                     'empleado_asignado' => $registro['empleado_asignado'],
                     'area_afectada' => $registro['area_afectada'],
-                    'canal_contacto' => ['canal_comtacto'],
+                    'canal_contacto' => $registro['canal_contacto'],
                     'create_date' => $registro['create_date'],
+                    'is_delete' => $registro['is_delete']
                 ];
             };
             $departamentos = array_unique(array_filter($departamentos));
             $listaDept = ['departamentos' => implode(',', $departamentos)];
-            
-/*             $empleados = $this->model->empleados($listaDept);
-
-            $estatus = $this->model->estatus(); */
             $extraData = $this->model->extraData($listaDept);
-            
+
             $empleados = $extraData['body']['resultado']['empleados_filtrados'];
             $estatus = $extraData['body']['resultado']['estatus'];
-        
+            
             $listaConEstilos = $this->ticketTables($listaTickets, $empleados, $estatus);
 
             Logger::module('Tickets', 'Datos nuevos', $listaConEstilos);
@@ -186,8 +183,9 @@ class TicketService
                     'tiempo_estimado' => $tiempo,
                     'empleado_asignado' => $registro['empleado_asignado'],
                     'area_afectada' => $registro['area_afectada'],
-                    'canal_contacto' => ['canal_comtacto'],
+                    'canal_contacto' => $registro['canal_contacto'],
                     'create_date' => $registro['create_date'],
+                    'is_delete' => $registro['is_delete']
                 ];
             };
 
@@ -197,9 +195,11 @@ class TicketService
             /* $empleados = $this->model->empleados($listaDept);
             $estatus = $this->model->estatus(); */
             $extraData = $this->model->extraData($listaDept);
-            
+
             $empleados = $extraData['body']['resultado']['empleados_filtrados'];
             $estatus = $extraData['body']['resultado']['estatus'];
+
+
             $listaConEstilos = $this->ticketTables($listaTickets, $empleados, $estatus);
             Logger::module('Tickets', 'Datos nuevos', $listaConEstilos);
             return $listaConEstilos;
@@ -303,6 +303,18 @@ class TicketService
 
             $nuevoTicket = $this->model->create($data);
 
+            Logger::module('Tickets', 'Datos nuevos', $nuevoTicket);
+            return $nuevoTicket;
+        } catch (\Exception $e) {
+            Logger::module('Tickets', 'Error en la funcion index al llenar el array ' . $e, [$data, $data]);
+        }
+    }
+    public function createAnalisis($data)
+    {
+
+        try {
+
+            $nuevoTicket = $this->model->createAnalisis($data);
             Logger::module('Tickets', 'Datos nuevos', $nuevoTicket);
             return $nuevoTicket;
         } catch (\Exception $e) {

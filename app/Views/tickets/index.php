@@ -1,7 +1,7 @@
     <?php
 
     use App\Core\Config; ?>
-    
+
     <div class="bg-white dark:bg-gray-700 rounded-2xl pt-2">
       <?php
       $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'index';
@@ -45,8 +45,15 @@
 
 
         </div>
-        
 
+
+      </div>
+    </div>
+    <!-- cargado de pantalla -->
+    <div id="loader-overlay" class="fixed inset-0 bg-gray-950 flex items-center justify-center z-999999 ">
+      <div class="bg-white p-6 rounded-2xl shadow-theme-md flex flex-col items-center gap-3">
+        <div class="w-10 h-10 border-4 border-solid border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+        <p class="text-sm text-gray-700">Cargando, por favor espera...</p>
       </div>
     </div>
 
@@ -66,5 +73,5 @@
       window.id_empleado = <?php echo $_SESSION['id_empleado']; ?>;
       window.usuario_nombre = "<?php echo $_SESSION['username']; ?>";
     </script>
-    <script type="module" src="src/js/modules/tickets/editar-ticket.js"></script>
+    <!-- <script type="module" src="src/js/modules/tickets/editar-ticket.js"></script> -->
     <script type="module" src="src/js/modules/tickets/ticket.js"></script>

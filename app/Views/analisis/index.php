@@ -2,14 +2,14 @@
 
     use App\Core\Config; ?>
     <div class="bg-white dark:bg-gray-800 pt-2">
-      <?php
+     <!--  <?php
       $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'index';
       ?>
 
       <div role="tablist" class="tabs tabs-bordered flex justify-around">
         <button data-tab="index" class="tab tab-btn tab-active">Analisis</button>
         <button data-tab="nuevo" class="tab tab-btn">Nuevo Analisis</button>
-      </div>
+      </div> -->
       <div
         class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-800">
         <div class=" gap-2  px-5 py-4 sm:px-6 sm:py-5">
@@ -110,6 +110,13 @@
       </div>
     </div>
 
+    <!-- cargado de pantalla -->
+    <div id="loader-overlay" class="fixed inset-0 bg-gray-950 flex items-center justify-center z-999999 ">
+      <div class="bg-white p-6 rounded-2xl shadow-theme-md flex flex-col items-center gap-3">
+        <div class="w-10 h-10 border-4 border-solid border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+        <p class="text-sm text-gray-700">Cargando, por favor espera...</p>
+      </div>
+    </div>
     
     <script>
       const BASE_URL = "<?php echo Config::get('app.base_url'); ?>";

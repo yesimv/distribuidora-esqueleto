@@ -14,7 +14,7 @@
                   <div class="">
                     <div id='formulario-ticket-nuevo'
                       class=" border-gray-100 p-5 border-y sm:p-6  dark:border-gray-800 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 ">
-                      
+
                       <!-- Departamento a contactar -->
                       <div class="         ">
                         <label
@@ -126,8 +126,8 @@
                           </span>
                         </div>
                       </div>
-                      
-                      
+
+
                       <!-- Titulo -->
                       <div class="         ">
                         <label
@@ -215,7 +215,7 @@
                           </span>
                         </div>
                       </div>
-                      
+
                       <!-- Tipo de solicitud -->
                       <div class="         ">
                         <label
@@ -570,23 +570,14 @@
 
 
             </div>
-            <div id="modal-msg"
-              class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-999999">
-
-              <div class="bg-white dark:bg-gray-900 p-6 rounded-xl w-[90%] max-w-[400px] min-w-[300px] shadow-theme-md">
-
-                <h2 id="msg-title" class="text-lg font-semibold mb-4"></h2>
-
-                <p id="msg-text" class="text-sm text-gray-600 dark:text-gray-200 mb-6"></p>
-
-                <div class="flex justify-end">
-                  <button id="msg-close" class="px-4 py-2 bg-brand-500 text-white rounded-lg">
-                    Cerrar
-                  </button>
-                </div>
-
+            <!-- cargado de pantalla -->
+            <div id="loader-overlay" class="fixed inset-0 bg-gray-950 flex items-center justify-center z-999999 ">
+              <div class="bg-white p-6 rounded-2xl shadow-theme-md flex flex-col items-center gap-3">
+                <div class="w-10 h-10 border-4 border-solid border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-sm text-gray-700">Cargando, por favor espera...</p>
               </div>
             </div>
+
             <!-- ====== Form Elements Section End -->
 
             <script type="module" src="src/js/modules/tickets/nuevoTicket.js"></script>

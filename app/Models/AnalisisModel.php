@@ -26,6 +26,21 @@ class AnalisisModel
                 ];
         }
     }
+    //obtener datos del analisis
+    public function getAnalisis(array $data)
+    {
+        try {
+            
+            
+            $response = $this->api->request('GET', 'analisis/find-by-ticket?id='.$data['id_ticket']);
+            return $response;
+        } catch (Exception $e) {
+            return [
+                'success'=> false,
+                'message'=> 'Error al conectarse a la API tickets: '. $e
+                ];
+        }
+    }
     public function rangoFecha(array $data)
     {
         try {

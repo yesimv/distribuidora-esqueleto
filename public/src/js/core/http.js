@@ -7,6 +7,7 @@ import {loader} from './loader.js';
  * @returns {Promise<Object>} - Devuelve respuesta JSON
  */
 export async function request(url, method = "GET", data = null) {
+    loader.show(); // muestra la ventana de carga
     const options = {
         method: method,
         headers: {
@@ -17,7 +18,7 @@ export async function request(url, method = "GET", data = null) {
         options.body = JSON.stringify(data);
     }
     try {
-        loader.show(); // muestra la ventana de carga
+        
         // Construir URL correctamente: Asegurar que haya barra entre BASE_URL y url
         // let finalUrl = CONFIG['BASE_URL'];
         // if (finalUrl && !finalUrl.endsWith('/')) {

@@ -4,12 +4,16 @@ import { abrirModalConfirm, initModal, mostrarMensaje } from "../../core/modal.j
 //import { cargarTicket } from './editarTicket.js';
 import { tabla } from '../../core/tabla.js'
 import { request } from '../../core/http.js'
-import{abrirAnalisis} from '../analisis/nuevoAnalisis.js'
+import { abrirAnalisis } from '../analisis/nuevoAnalisis.js'
+import { abrirModalVerTicket } from "../../core/verDataTicket.js";
+
+
 const fp = window.flatpickr;
 // se define la variable de la tabla para actualizarla
 const app = {
     dt: null
 };
+
 
 let editarCargado = false;
 /* dar formato a el input fecha */
@@ -36,7 +40,7 @@ const eventos = () => {
 
     /*Para accionar los botones de ver y cancelar ticket*/
     tabla.addEventListener('click', async (e) => {
-        
+
         const btnView = e.target.closest('.btn-view');
         const btnBorrar = e.target.closest('.btn-borrar');
         const btnAsignarme = e.target.closest('.btn-asignarme');
@@ -57,7 +61,7 @@ const eventos = () => {
             const estatus = fila.querySelector('.td-estatus')?.textContent.trim();
             const id = btnView.dataset.id;
             // validar
-            if (estatus === 'Cancelado' || estatus === 'Cerrado'  || estatus === 'Reasignado') {
+            if (estatus === 'Cancelado' || estatus === 'Cerrado' || estatus === 'Reasignado') {
                 abrirModalVerTicket(id);
                 /* mostrarMensaje({
                     titulo: "Atención",
@@ -67,7 +71,7 @@ const eventos = () => {
                 return; // NO continuar
             }
 
-            
+
 
             abrirEditarTab(id);
 
@@ -146,7 +150,6 @@ const eventos = () => {
 
 
         if (esEstatus) {
-
             //   mostrar texto seleccionado (visual)
             const selectedText = container.querySelector('.selected-estatus');
             const textoAnterior = selectedText.textContent;
@@ -155,22 +158,29 @@ const eventos = () => {
             container.querySelector('.select-options').classList.add('hidden');
 
             selectedText.textContent = option.textContent;
+            const estatus = option.dataset.value;
 
-            //   confirmación
-            abrirModalConfirm({
-                titulo: "Cambiar estatus",
-                mensaje: `¿Deseas cambiar el estatus a "${option.textContent}"?`,
-                container: container,
-                previousValue: textoAnterior,
-                textSelector: '.selected-estatus',
-                onConfirm: async () => {
-                    await actualizarEstatus({
-                        id_ticket: idTicket,
-                        estatus: option.dataset.value
-                    }, container);
-                }
-            });
-            return;
+            if (estatus == 3 || estatus == 4 || estatus == 5) {
+                abrirAnalisis(idTicket, estatus,container);
+            } else if (estatus == 2) {
+                //   confirmación
+                abrirModalConfirm({
+                    titulo: "Cambiar estatus",
+                    mensaje: `¿Deseas cambiar el estatus a "${option.textContent}"?`,
+                    container: container,
+                    previousValue: textoAnterior,
+                    textSelector: '.selected-estatus',
+                    onConfirm: async () => {
+                        await actualizarEstatus({
+                            id_ticket: idTicket,
+                            estatus: option.dataset.value
+                        }, container);
+                    }
+                });
+            }
+
+
+        
         }
 
         if (idEmpleado) {
@@ -209,7 +219,7 @@ const eventos = () => {
     btnClose.addEventListener('click', () => {
         document.getElementById('modal-ver-ticket')
             .classList.add('hidden');
-        console.log('entra el cerrar');
+        
     })
     if (!btn) return;
 
@@ -246,7 +256,7 @@ const configTable = () => {
     ];
 }
 
-const tablaTickets = async (fechas = null) => {
+export const tablaTickets = async (fechas = null) => {
     const config = configTable();
     const extras = ['AccionesTicket'];
 
@@ -257,6 +267,7 @@ const tablaTickets = async (fechas = null) => {
         dataSource = await request('/api/tickets', 'GET');
     }
     console.log(dataSource);
+    
 
     app.dt = await tabla('#tabla-tickets', config, dataSource, extras);
 }
@@ -398,16 +409,6 @@ async function asignarTicket(data, rowElement) {
 
 async function actualizarEstatus(data, rowElement) {
     try {
-
-
-        console.log(data);
-        console.log(rowElement);
-        if(data.estatus == 3 || data.estatus == 4 || data.estatus == 5 ){
-            
-            abrirAnalisis(data.estatus);
-            
-        }
-        return;
         const response = await request('/api/actualizar-estatus', 'POST', data);
 
         if (response.status == 200) {
@@ -417,10 +418,8 @@ async function actualizarEstatus(data, rowElement) {
                 mensaje: "El estatus fue actualizado correctamente",
                 tipo: "success"
             });
-            //refrescar pantalla
-            setTimeout(() => {
-                window.location.href = "/prueba/distribuidora-esqueleto/tickets";
-            }, 2000);
+            //   recargar tabla
+            tablaTickets();
 
         } else {
             mostrarMensaje({
@@ -439,54 +438,5 @@ async function actualizarEstatus(data, rowElement) {
 
 
 
-async function abrirModalVerTicket(id) {
 
-    try {
-        const response = await request('/api/get-ticket', 'POST', {
-            id_ticket: id
-        });
-
-
-        if (response.status === 200) {
-
-            llenarModalVer(response.body.resultado);
-
-            document.getElementById('modal-ver-ticket')
-                .classList.remove('hidden');
-
-
-        } else {
-            console.error(response.body.mensaje);
-        }
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-function llenarModalVer(ticket) {
-    //const tiempo = tiemposReales.find(t => t.id_ticket == ticket.id_ticket);
-    console.log(ticket);
-    //console.log(tiempo);
-    //console.log(tiemposReales);
-
-    document.getElementById('ver-id').textContent = ticket.id_ticket || 'Sin especificar';
-    document.getElementById('ver-tipo').textContent = ticket.tipo_ticket || 'Sin especificar';
-    //document.getElementById('ver-tiempo-estimado').textContent = tiempo ? tiempo.tiempo_estimado : 'Sin registro';
-    //document.getElementById('ver-tiempo-real').textContent = tiempo ? tiempo.tiempo_real : 'Sin registro';
-    document.getElementById('ver-titulo').textContent = ticket.titulo || 'Sin especificar';
-    document.getElementById('ver-descripcion').textContent = ticket.descripcion || 'Sin descripción';
-    document.getElementById('ver-comentarios').textContent = ticket.comentarios || 'Sin comentarios';
-    document.getElementById('ver-departamento-solicitante').textContent = ticket.departamento_solicitante || 'Sin especificar';
-    document.getElementById('ver-empleado-solicitante').textContent = ticket.empleado_solicitante || 'Sin especificar';
-    document.getElementById('ver-categoria').textContent = ticket.departamento_categoria || 'Sin especificar';
-    document.getElementById('ver-estacion').textContent = ticket.estacion || 'Sin especificar';
-    document.getElementById('ver-area-afectada').textContent = ticket.area_afectada || 'Sin especificar';
-    document.getElementById('ver-nivel-afectacion').textContent = ticket.nivel_afectacion || 'Sin especificar';
-    document.getElementById('ver-prioridad').textContent = ticket.prioridad || 'Sin especificar';
-    document.getElementById('ver-estatus').textContent = ticket.estatus || 'Sin especificar';
-    document.getElementById('ver-departamento-asignado').textContent = ticket.departamento_asignado || 'Sin especificar';
-    document.getElementById('ver-empleado-asignado').textContent = ticket.empleado_asignado || 'Sin asignar';
-
-
-}
 

@@ -8,20 +8,6 @@ import { tabla } from '../../core/tabla.js'
 
 const tabs = document.querySelectorAll('.tab-btn');
 
-/* tabs.forEach(tab => {
-
-  tab.addEventListener('click', () => {
-
-    const target = tab.dataset.tab;
-
-    if (target === 'index' && !tablaTicketsCargada) {
-      cargarTablaTicketsSiExiste();
-      tablaTicketsCargada = true;
-    }
-
-  });
-
-}); */
 
 
 export function cargarTablaSiExiste() {

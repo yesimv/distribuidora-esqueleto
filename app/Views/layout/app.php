@@ -1,6 +1,4 @@
-    <?php
-
-    use App\Core\Config; ?>
+    <?php use App\Core\Config; ?>
     <!doctype html>
     <html lang="es">
 
@@ -81,18 +79,7 @@
                             </div>
                         </div>
                         <!-- Breadcrumb End -->
-                        <div id="loader-overlay" class="fixed inset-0 bg-gray-950 flex items-center justify-center z-999999 ">
-
-                            <div class="bg-white p-6 rounded-2xl shadow-theme-md flex flex-col items-center gap-3">
-
-                                <!-- spinner -->
-                                <div class="w-10 h-10 border-4 border-solid border-brand-500 border-t-transparent rounded-full animate-spin"></div>
-
-                                <p class="text-sm text-gray-700">Cargando, por favor espera...</p>
-
-                            </div>
-
-                        </div>
+                        
                         <?php echo $content; ?>
 
                     </div>
@@ -139,140 +126,152 @@
         </div>
         <!-- ===== modal datos ticket ===== -->
 
-        <div id="modal-ver-ticket" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50 px-4 ">
+        <div id="modal-ver-ticket" class="fixed inset-0 bg-black/50 hidden flex items-start justify-center overflow-y-auto py-10 z-999999">
 
-            <div class="  w-[90%] max-w-[400px] min-w-[300px] mx-auto rounded-2xl overflow-hidden modal-info-ticket">
+            <div class=" modal-info-ticket  w-[90%] mx-auto rounded-2xl overflow-hidden">
 
                 <!-- HEADER -->
                 <div class="flex justify-between items-center px-6 py-4 border-b dark:border-gray-700 ">
-                    <h2 class="text-lg font-semibold">Detalle del Ticket</h2>
+                    <h2 class="">Detalle del Ticket</h2>
                     <button id="msg-info-ticket-close" class="text-gray-500 hover:text-red-500 text-xl">
                         ✕
                     </button>
                 </div>
 
                 <!-- BODY -->
-                <div class="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
+                <div class=" body-ver-ticket">
+                    <div>
+                        <!-- INFO GENERAL -->
+                        <div class="grid-info-general">
+                            <div>
+                                <div class="flex flex-col w-fit w-40">
+                                    <label class="text-xs text-gray-500">ID Ticket</label>
+                                    <div id="ver-id" ></div>
+                                </div>
+                                <div class="flex flex-col w-fit w-40 pl-4">
+                                    <label class="text-xs text-gray-500">Resolución</label>
+                                    <div id="ver-resolucion"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex flex-col w-fit pr-3 w-48">
+                                    <label class="text-xs text-gray-500">Tiempo estimado</label>
+                                    <div id="ver-tiempo-estimado"></div>
+                                </div>
 
-                    <!-- INFO GENERAL -->
-                    <div class="grid-info-general">
-
-                        <div class="flex flex-col w-40">
-                            <label class="text-xs text-gray-500">ID</label>
-                            <div id="ver-id" class="font-medium"></div>
+                                <div class="flex flex-col w-fit w-48">
+                                    <label class="text-xs text-gray-500">Tiempo real</label>
+                                    <div id="ver-tiempo-real"></div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex flex-col w-40">
-
-                        </div>
-
-
-                        <div class="flex flex-col w-48">
-                            <label class="text-xs text-gray-500">Tiempo estimado</label>
-                            <div id="ver-tiempo-estimado"></div>
-                        </div>
-
-                        <div class="flex flex-col w-48">
-                            <label class="text-xs text-gray-500">Tiempo real</label>
-                            <div id="ver-tiempo-real"></div>
-                        </div>
-
-                    </div>
-                    <!-- SOLICITANTE -->
-                    <div class="grid-info-empleado">
-                        <div class="flex flex-col w-60">
-                            <label class="text-xs text-gray-500">Departamento solicitante</label>
-                            <div id="ver-departamento-solicitante"></div>
-                        </div>
-
-                        <div class="flex flex-col w-60">
-                            <label class="text-xs text-gray-500">Empleado solicitante</label>
-                            <div id="ver-empleado-solicitante"></div>
-                        </div>
-                    </div>
-
-                    <!-- ESTACION -->
-                    <div class="flex flex-col">
-                        <label class="text-xs text-gray-500">Estación</label>
-                        <div id="ver-estacion"></div>
-                    </div>
-                    <!-- TITULO -->
-                    <div class="flex flex-col">
-                        <label class="text-xs text-gray-500">Título</label>
-                        <div id="ver-titulo" class="font-medium"></div>
-                    </div>
-
-
-                    <!-- DESCRIPCIÓN -->
-                    <div class="flex flex-col">
-                        <label class="text-xs text-gray-500">Descripción</label>
-                        <div id="ver-descripcion" class="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg"></div>
-                    </div>
-
-                    <!-- COMENTARIOS -->
-                    <div class="flex flex-col">
-                        <label class="text-xs text-gray-500">Comentarios</label>
-                        <div id="ver-comentarios" class="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg"></div>
-                    </div>
-
-
-
-                    <!-- DETALLES TECNICOS -->
-                    <div class="grid-info-detalles">
-
+                        <!-- Causa -->
                         <div class="flex flex-col">
-                            <label class="text-xs text-gray-500">Área afectada</label>
-                            <div id="ver-area-afectada"></div>
+                            <label class="text-xs text-gray-500">Causa</label>
+                            <div id="ver-causa" class="text-detalles-ticket"></div>
                         </div>
+                        <!-- solucion -->
                         <div class="flex flex-col">
-                            <label class="text-xs text-gray-500">Categoría</label>
-                            <div id="ver-categoria"></div>
+                            <label class="text-xs text-gray-500">Solución</label>
+                            <div id="ver-solucion" class="text-detalles-ticket"></div>
                         </div>
-
-
-                        <div class="flex flex-col w-40">
-                            <label class="text-xs text-gray-500">Tipo</label>
-                            <div id="ver-tipo"></div>
-                        </div>
-
-
-
-
-                        <div class="flex flex-col ">
-                            <label class="text-xs text-gray-500">Nivel de afectación</label>
-                            <div id="ver-nivel-afectacion"></div>
-                        </div>
-
+                        <!-- COMENTARIOS analisis -->
                         <div class="flex flex-col">
-                            <label class="text-xs text-gray-500">Prioridad</label>
-                            <div id="ver-prioridad"></div>
+                            <label class="text-xs text-gray-500">Comentarios del análisis</label>
+                            <div id="ver-comentarios-analisis" class="text-detalles-ticket"></div>
+                        </div>
+                        <!-- SOLICITANTE -->
+                        <div class="grid-info-empleado">
+                            <div class="flex flex-col w-60">
+                                <label class="text-xs text-gray-500">Departamento solicitante</label>
+                                <div id="ver-departamento-solicitante"></div>
+                            </div>
+
+                            <div class="flex flex-col w-60">
+                                <label class="text-xs text-gray-500">Empleado solicitante</label>
+                                <div id="ver-empleado-solicitante"></div>
+                            </div>
+                        </div>
+                        <!-- ESTACION -->
+                        <div class="flex flex-col">
+                            <label class="text-xs text-gray-500">Estación</label>
+                            <div id="ver-estacion"></div>
                         </div>
 
-                        <div class="flex flex-col ">
-                            <label class="text-xs text-gray-500">Estatus</label>
-                            <div id="ver-estatus"></div>
+                    </div>
+                    <div>
+                        <!-- TITULO -->
+                        <div class="flex flex-col">
+                            <label class="text-xs text-gray-500">Título</label>
+                            <div id="ver-titulo"></div>
+                        </div>
+                        
+                        <!-- DESCRIPCIÓN -->
+                        <div class="flex flex-col">
+                            <label class="text-xs text-gray-500">Descripción</label>
+                            <div id="ver-descripcion" class="text-detalles-ticket"></div>
+                        </div>
+                        <!-- COMENTARIOS -->
+                        <div class="flex flex-col">
+                            <label class="text-xs text-gray-500">Comentarios</label>
+                            <div id="ver-comentarios" class="text-detalles-ticket"></div>
+                        </div>
+                        <!-- DETALLES TECNICOS -->
+                        <div class="grid-info-detalles">
+
+                            <div class="flex flex-col">
+                                <label class="text-xs text-gray-500">Área afectada</label>
+                                <div id="ver-area-afectada"></div>
+                            </div>
+                            <div class="flex flex-col">
+                                <label class="text-xs text-gray-500">Categoría</label>
+                                <div id="ver-categoria"></div>
+                            </div>
+
+
+                            <div class="flex flex-col w-40">
+                                <label class="text-xs text-gray-500">Tipo</label>
+                                <div id="ver-tipo"></div>
+                            </div>
+
+
+
+
+                            <div class="flex flex-col ">
+                                <label class="text-xs text-gray-500">Nivel de afectación</label>
+                                <div id="ver-nivel-afectacion"></div>
+                            </div>
+
+                            <div class="flex flex-col">
+                                <label class="text-xs text-gray-500">Prioridad</label>
+                                <div id="ver-prioridad"></div>
+                            </div>
+
+                            <div class="flex flex-col ">
+                                <label class="text-xs text-gray-500">Estatus</label>
+                                <div id="ver-estatus"></div>
+                            </div>
+                        </div>
+                        <!-- ASIGNACIÓN -->
+                        <div class="grid-info-empleado">
+                            <div class="flex flex-col w-60">
+                                <label class="text-xs text-gray-500">Departamento asignado</label>
+                                <div id="ver-departamento-asignado"></div>
+                            </div>
+
+                            <div class="flex flex-col w-60">
+                                <label class="text-xs text-gray-500">Empleado asignado</label>
+                                <div id="ver-empleado-asignado"></div>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- ASIGNACIÓN -->
-                    <div class="grid-info-empleado">
-                        <div class="flex flex-col w-60">
-                            <label class="text-xs text-gray-500">Departamento asignado</label>
-                            <div id="ver-departamento-asignado"></div>
-                        </div>
-
-                        <div class="flex flex-col w-60">
-                            <label class="text-xs text-gray-500">Empleado asignado</label>
-                            <div id="ver-empleado-asignado"></div>
-                        </div>
-                    </div>
-
                 </div>
 
             </div>
         </div>
         <!-- modal Analisis tecnico -->
         <div id="modal-crear-analisis" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50 px-4 ">
-            <div  class="  w-[90%] max-w-[400px] min-w-[300px] mx-auto rounded-2xl overflow-hidden modal-info-ticket">
+            <div class=" modal-info-ticket body-analisis-crear  w-[90%] mx-auto rounded-2xl overflow-hidden">
                 <div class="px-5 py-4 sm:px-6 sm:py-5">
                     <h3
                         class="text-base font-medium text-gray-800 dark:text-white/90  ">

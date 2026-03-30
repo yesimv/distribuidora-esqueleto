@@ -34,7 +34,8 @@ class AnalisisService
                     'solucion' => $registro['solucion'],
                     'comentarios' => $registro['comentarios'],
                     'tiempo_est' => $tiempoEst,
-                    'tiempo_real' => $tiempoReal
+                    'tiempo_real' => $tiempoReal,
+                    'is_delete' => $registro['is_delete']
 
                 ];
             };
@@ -45,6 +46,33 @@ class AnalisisService
             Logger::module('Analisis', 'Error en la funcion index al llenar el array ' . $e, [$response, $listaAnalisis]);
         }
     }
+
+    public function getAnalisis($data)
+    {
+        try {
+            $response = $this->model->getAnalisis($data);
+            $analisis = $response['body']['resultado'];
+            $tiempoEst = gmdate('H:i', $analisis['tiempo_est']);
+            $tiempoReal = gmdate('H:i', $analisis['tiempo_real']);
+            $analisisLimpio = [
+                'id_ticket' => $analisis['id_ticket'],
+                'id_analisis_tecnico' => $analisis['id_analisis_tecnico'],
+                'resolucion' => $analisis['resolucion'],
+                'causa' => $analisis['causa'],
+                'solucion' => $analisis['solucion'],
+                'comentarios' => $analisis['comentarios'],
+                'tiempo_est' => $tiempoEst,
+                'tiempo_real' => $tiempoReal,
+                'is_delete' => $analisis['is_delete']
+
+            ];
+            Logger::module('Analisis', 'Datos nuevos', $analisisLimpio);
+            return $analisisLimpio;
+        } catch (\Exception $e) {
+            Logger::module('Analisis', 'Error en la funcion index al llenar el array ' . $e, [$data, $data]);
+        }
+    }
+
     public function rangoFecha(array $data)
     {
 
@@ -54,6 +82,8 @@ class AnalisisService
 
             foreach ($response['body']['resultado'] as $index => $registro) {
 
+                $tiempoEst = gmdate('H:i', $registro['tiempo_est']);
+                $tiempoReal = gmdate('H:i', $registro['tiempo_real']);
                 $listaAnalisis[$index] = [
                     'id_ticket' => $registro['id_ticket'],
                     'id_analisis_tecnico' => $registro['id_analisis_tecnico'],
@@ -61,13 +91,14 @@ class AnalisisService
                     'causa' => $registro['causa'],
                     'solucion' => $registro['solucion'],
                     'comentarios' => $registro['comentarios'],
-                    'tiempo_est' => $registro['tiempo_est'],
-                    'tiempo_real' => $registro['tiempo_real']
+                    'tiempo_est' => $tiempoEst,
+                    'tiempo_real' => $tiempoReal,
+                    'is_delete' => $registro['is_delete']
 
                 ];
             };
 
-            Logger::module('Tickets', 'Datos nuevos', $listaAnalisis);
+            Logger::module('Analisis', 'Datos nuevos', $listaAnalisis);
             return $listaAnalisis;
         } catch (\Exception $e) {
             Logger::module('Analisis', 'Error en la funcion index al llenar el array ' . $e, [$response, $listaAnalisis]);

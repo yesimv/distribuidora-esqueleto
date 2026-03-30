@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         .addEventListener("change", function () {
 
             const idDepartamento = this.value;
-            console.log(idDepartamento);
+
             filtrarEmpleados(idDepartamento);
 
         });
@@ -39,25 +39,29 @@ document.addEventListener("DOMContentLoaded", async function () {
         abrirModalConfirm({
             titulo: "Confirmación",
             mensaje: `¿Seguro que deseas guardar los cambios?`,
-           
+
             onConfirm: async () => {
                 const selects = document.querySelectorAll('select');
-                const titulo = document.querySelector('#tituloArea');
+                const titulo = document.querySelector('#tituloAreaEdit');
                 let valido = true;
 
                 selects.forEach(select => {
                     //   excluir selects por id
-                    if (select.id === 'empleadoSelect') {
+                    if (select.id === 'empleadoSelect' || select.id === 'resolucionSelect') {
+
                         return;
                     }
                     if (select.value === "" || select.value === null) {
+
                         valido = false;
                         select.classList.add('border-red-500'); // opcional visual
                     } else {
+
                         select.classList.remove('border-red-500');
                     }
                 });
                 if (titulo.value === "" || titulo.value === null) {
+
                     valido = false;
                 }
 
@@ -89,12 +93,12 @@ const eventos = () => {
         abrirModalConfirm({
             titulo: "Cancelar registro",
             mensaje: `¿Seguro que deseas cancelar la edición?, Ningún cambio será guardado.`,
-            
+
             onConfirm: async () => {
                 window.location.href = "/prueba/distribuidora-esqueleto/tickets";
             }
         });
-        
+
 
     });
     //botones del modal
@@ -130,13 +134,16 @@ function autoSeleccionarDepartamento(idEmpleado) {
     departamentoSelect.value = empleado.id_departamento;
 
 }
-
+//optiene los option de los select
 const valoresFormulario = async () => {
     //se piden los datos para el formulario desde la base de datos
     const dataForms = await request('/api/get-form-data', 'GET');
 
+    console.log(dataForms);
     const r = dataForms;
     empleadosGlobal = r.empleado;
+
+
     llenarSelect("areaSelect", r.area_afectada, "id_area_afectada", "descripcion");
     llenarSelect("canalSelect", r.canal_contacto, "id_canal_contacto", "descripcion");
     llenarSelect("categoriaSelect", r.categoria, "id_categoria", "descripcion");
@@ -156,14 +163,14 @@ function llenarSelect(selectId, datos, idCampo, textoCampo) {
 
     select.innerHTML = '<option value=""></option>';
 
-    if (!datos) {
+    if (!datos || (Array.isArray(datos) && datos.length === 0)) {
         console.warn("Datos vacíos:", selectId);
         return;
     }
 
-    // convertir objeto a array
+    //   si viene como objeto único → convertirlo a array
     if (!Array.isArray(datos)) {
-        datos = Object.values(datos);
+        datos = [datos];
     }
 
     datos.forEach(item => {
@@ -177,6 +184,14 @@ function llenarSelect(selectId, datos, idCampo, textoCampo) {
 
     });
 
+    //   SI SOLO HAY UNO → seleccionarlo y bloquear
+    if (datos.length === 1) {
+        select.value = datos[0][idCampo];
+        select.disabled = true;
+    } else {
+        select.disabled = false;
+    }
+    select.classList.toggle("select-disable", select.disabled);
 }
 
 async function cargarTicket(id) {
@@ -203,40 +218,47 @@ async function cargarTicket(id) {
 }
 
 function llenarFormulario(ticket) {
-
+    console.log(ticket);
     idTicket = ticket.id_ticket;
-    document.getElementById('tituloArea').value = ticket.titulo;
-    document.getElementById('departamentoSelect').value = ticket.id_departamento_asi;
+    document.getElementById('departamentoSolInput').value = ticket.departamento_solicitante;
+    document.getElementById('empleadoSolInput').value = ticket.empleado_solicitante;
+
     document.getElementById('estacionSelect').value = ticket.id_estacion;
-    document.getElementById('tipoSelect').value = ticket.id_tipo;
-    document.getElementById('areaSelect').value = ticket.id_area_afectada;
-    document.getElementById('prioridadSelect').value = ticket.id_prioridad;
-    document.getElementById('nivelSelect').value = ticket.id_lvl_afectacion;
+    document.getElementById('tituloAreaEdit').value = ticket.titulo;
+    document.getElementById('departamentoSelect').value = ticket.id_departamento_asi;
     document.getElementById('empleadoSelect').value = ticket.id_empleado_asi;
+    document.getElementById('tipoSelect').value = ticket.id_tipo;
     document.getElementById('categoriaSelect').value = ticket.id_categoria;
+    document.getElementById('areaSelect').value = ticket.id_area_afectada;
+    document.getElementById('nivelSelect').value = ticket.id_lvl_afectacion;
+    document.getElementById('prioridadSelect').value = ticket.id_prioridad;
     document.getElementById('canalSelect').value = ticket.id_canal_contacto;
-    document.getElementById('descripcionArea').value = ticket.descripcion;
-    document.getElementById('comentariosArea').value = ticket.comentarios;
     // checkbox  
     document.getElementById('enTiempo').checked = ticket.se_creo_en_tiempo == 1;
+    document.getElementById('descripcionArea').value = ticket.descripcion;
+    document.getElementById('comentariosArea').value = ticket.comentarios;
+
 }
 
 
 //se manda toda la data del formulario para crear un ticket en la base de datos
 const editarTicket = async () => {
 
-    const titulo = document.getElementById('tituloArea').value;
+
     //const adjunto_form = document.getElementById("demo-upload").value;
-    const id_departamento_asi = document.getElementById("departamentoSelect").value;
+
     const id_estacion = document.getElementById("estacionSelect").value;
-    const id_tipo = document.getElementById("tipoSelect").value;
-    const id_area_afectada = document.getElementById("areaSelect").value;
-    const id_prioridad = document.getElementById("prioridadSelect").value;
-    const id_lvl_afectacion = document.getElementById("nivelSelect").value;
-    const id_empleado_asi = document.getElementById("empleadoSelect").value;
+    const titulo = document.getElementById('tituloAreaEdit').value;
     //const id_estatus = document.getElementById("estatusSelect").value;
+    const id_departamento_asi = document.getElementById("departamentoSelect").value;
+    const id_empleado_asi = document.getElementById("empleadoSelect").value;
+    const id_tipo = document.getElementById("tipoSelect").value;
     const id_categoria = document.getElementById("categoriaSelect").value;
+    const id_area_afectada = document.getElementById("areaSelect").value;
+    const id_lvl_afectacion = document.getElementById("nivelSelect").value;
+    const id_prioridad = document.getElementById("prioridadSelect").value;
     const id_canal_contacto = document.getElementById("canalSelect").value;
+
     const se_creo_en_tiempo = document.getElementById("enTiempo").checked;
     const descripcion = document.getElementById('descripcionArea').value;
     const comentarios = document.getElementById("comentariosArea").value;
@@ -288,5 +310,5 @@ const editarTicket = async () => {
 
     setTimeout(() => {
         window.location.href = "/prueba/distribuidora-esqueleto/tickets";
-    }, 2000);
+    }, 1000);
 }

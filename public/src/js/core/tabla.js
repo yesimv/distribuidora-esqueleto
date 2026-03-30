@@ -18,13 +18,6 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
         new DataTable(nombreTabla).destroy();
     }
 
-    //validacion de tablas si existe o no
-    // if (!tablaTickets){
-    //     console.error('tabla inexistente: '+nombreTabla);
-    //     return
-    // } 
-
-
     try {
         const tablaElement = document.querySelector(nombreTabla);
         const cols = [...columnas];
@@ -43,15 +36,15 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
 
                             accionesEstatus = `<span  class="${row.estatus_class}">${row.estatus}</span>`;
 
-                        } else if (row.id_estatus == 1 || row.id_estatus == 2){
+                        } else if (row.id_estatus == 1 || row.id_estatus == 2) {
 
-                            if(esJefe || row.id_empleado_asi == window.id_empleado){
+                            if (esJefe || row.id_empleado_asi == window.id_empleado) {
                                 accionesEstatus = `
                                     <div 
                                     
                                     class="min-w-[120px] relative custom-select estatus-select"
                                     data-id="${row.id_ticket}"
-                                    data-depto="${row.id_departamento_asi}
+                                    data-depto="${row.id_departamento_asi}"
                                      data-actual="${row.estatus}"
                                     >
                                     
@@ -80,13 +73,15 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
                                     </div>
                             `;
 
+                            } else {
+                                accionesEstatus = `<span  class="${row.estatus_class}">${row.estatus}</span>`;
                             }
                         }
                         return `<div data-estatus="${row.estatus}">
                                     ${accionesEstatus}
                                 </div>`;
                     }
-                        
+
                 },
                 // se agrega el campo de empleado asignado
                 {
@@ -167,8 +162,29 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
                     orderable: false,
                     className: 'no-export',
                     render: function (data, type, row) {
-
-                        return `
+                        if (row.is_delete == 1) {
+                            return `
+                            <div>
+                                <p>Ticket eliminado</p>
+                            </div>`
+                        } else if(row.id_estatus == 3 || row.id_estatus == 4 || row.id_estatus == 5 ) {
+                            return `
+                                <div class="">
+                                    <button class="btn-view group action-btn" data-tooltip="Ver Ticket" data-id="${row.id_ticket}">
+                                
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="#d97706">
+                                        <path d="M200-200h57l391-391-57-57-391 391v57Zm-80 
+                                        80v-170l528-528q12-12 27-18t31-6q16 0 31 
+                                        6t27 18l57 57q12 12 18 27t6 31q0 16-6 
+                                        31t-18 27L290-120H120Zm640-584-56-56 56 
+                                        56ZM591-620l-28-28 57 57-29-29Z"/>
+                                        </svg>
+                                    </button>
+                                    
+                                </div>
+                                `;
+                        }else{
+                            return `
                         <div class="flex gap-2">
                             <button class="btn-view group action-btn" data-tooltip="Ver Ticket" data-id="${row.id_ticket}">
                         
@@ -192,6 +208,8 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
                             </button>
                         </div>
                     `;
+                        }
+
 
                     }
 

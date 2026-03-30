@@ -1,10 +1,10 @@
 import { buttonPop } from '../../core/buttonPop.js';
 import { request } from '../../core/http.js'
 import { tabla } from '../../core/tabla.js'
-import { abrirModalVerTicket } from "../../core/modal.js";
+import { abrirModalVerTicket } from "../../core/verDataTicket.js";
 const fp = window.flatpickr;
 let dataSource = null;
-let tiemposReales = [];
+
 
 /* dar formato a el input fecha */
 const configFecha = {
@@ -21,9 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cargarTablaSiExiste();
 
     btnPop();
-    /*    const btn = document.querySelector('#btn-filtro-fecha-analisis');
-       if (!btn) return;
-   */
+    
 
 
     eventos();
@@ -101,13 +99,7 @@ const tablaAnalisis = async (fechas = null) => {
         dataSource = await request('/api/analisis', 'GET');
     }
 
-    dataSource.forEach(item => {
-        tiemposReales.push({
-            id_ticket: item.id_ticket,
-            tiempo_estimado: item.tiempo_est,
-            tiempo_real: item.tiempo_real
-        });
-    });
+
     const dt = tabla('#tabla-analisis', columnas, dataSource, extras);
 
 
@@ -122,55 +114,4 @@ const filtrarPorFecha = async () => {
     };
 
     tablaAnalisis(fechas);
-}
-
-async function abrirModalVerTicket(id) {
-
-    try {
-        const response = await request('/api/get-ticket', 'POST', {
-            id_ticket: id
-        });
-
-
-        if (response.status === 200) {
-
-            llenarModalVer(response.body.resultado);
-
-            document.getElementById('modal-ver-ticket')
-                .classList.remove('hidden');
-
-
-        } else {
-            console.error(response.body.mensaje);
-        }
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-function llenarModalVer(ticket) {
-    const tiempo = tiemposReales.find(t => t.id_ticket == ticket.id_ticket);
-    console.log(ticket);
-    console.log(tiempo);
-    console.log(tiemposReales);
-
-    document.getElementById('ver-id').textContent = ticket.id_ticket || 'Sin especificar';
-    document.getElementById('ver-tipo').textContent = ticket.tipo_ticket || 'Sin especificar';
-    document.getElementById('ver-tiempo-estimado').textContent = tiempo ? tiempo.tiempo_estimado : 'Sin registro';
-    document.getElementById('ver-tiempo-real').textContent = tiempo ? tiempo.tiempo_real : 'Sin registro';
-    document.getElementById('ver-titulo').textContent = ticket.titulo || 'Sin especificar';
-    document.getElementById('ver-descripcion').textContent = ticket.descripcion || 'Sin descripción';
-    document.getElementById('ver-comentarios').textContent = ticket.comentarios || 'Sin comentarios';
-    document.getElementById('ver-departamento-solicitante').textContent = ticket.departamento_solicitante || 'Sin especificar';
-    document.getElementById('ver-empleado-solicitante').textContent = ticket.empleado_solicitante || 'Sin especificar';
-    document.getElementById('ver-categoria').textContent = ticket.departamento_categoria || 'Sin especificar';
-    document.getElementById('ver-estacion').textContent = ticket.estacion || 'Sin especificar';
-    document.getElementById('ver-area-afectada').textContent = ticket.area_afectada || 'Sin especificar';
-    document.getElementById('ver-nivel-afectacion').textContent = ticket.nivel_afectacion || 'Sin especificar';
-    document.getElementById('ver-prioridad').textContent = ticket.prioridad || 'Sin especificar';
-    document.getElementById('ver-estatus').textContent = ticket.estatus || 'Sin especificar';
-    document.getElementById('ver-departamento-asignado').textContent = ticket.departamento_asignado || 'Sin especificar';
-    document.getElementById('ver-empleado-asignado').textContent = ticket.empleado_asignado || 'Sin asignar';
-
-
 }

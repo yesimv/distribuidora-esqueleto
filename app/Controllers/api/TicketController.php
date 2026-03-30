@@ -71,8 +71,8 @@ class TicketController extends BaseController
         $this->validateMethod('POST');
         $data = $this->getJsonInput();  //atrapa los datos que le mandaste en el POST
         $ticketService = $this->ticketService;
-        $this->json($data);
-        $result = $ticketService->create($data);
+        
+        $result = $ticketService->createAnalisis($data);
 
         $this->json($result);
     }

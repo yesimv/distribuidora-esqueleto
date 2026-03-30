@@ -1,23 +1,51 @@
 import { request } from '../../core/http.js'
+import { abrirModalConfirm, initModal, mostrarMensaje } from "../../core/modal.js";
+import { tablaTickets } from '../tickets/ticket.js';
+
 let idTicket = null;
 
-export function abrirAnalisis(id) {
+export function abrirAnalisis(idTicket, estatus, container) {
+    //se pinta mientras cargan las opciones
+    document.getElementById("resolucionSelect").innerHTML = '<option disabled selected>Cargando...</option>'
+    valoresResolucion();
+
     const modal = document.getElementById('modal-crear-analisis');
     modal.classList.remove('hidden');
+    console.log(estatus);
+    console.log(container);
+    //toma el estatus anterios
+    const estatusOriginal = container.dataset.actual;
 
-    modal.dataset.id = id; // 🔥 aquí guardas el id
-}
-document.addEventListener("DOMContentLoaded", function () {
+    console.log(estatusOriginal);
+
+    const span = container.querySelector(".selected-estatus");
 
     const btnCrearAnalisis = document.getElementById("btn-formulario-analisis-nuevo");
     //para crear un Analisis nuevo
+
+    const btnCloseAnalisis = document.getElementById('cancel-analisis');
+    btnCloseAnalisis.addEventListener('click', () => {
+        document.getElementById("resolucionSelect").value = "";
+        document.getElementById("causaAnalisis").value = "";
+        document.getElementById("comentariosAnalisis").value = "";
+        document.getElementById("solucionAnalisis").value = "";
+        modal.classList.add('hidden');
+        //recoloca el estatus anterior al hacer click en cancelar
+        span.textContent = estatusOriginal;
+    })
+
+
     btnCrearAnalisis.addEventListener('click', () => {
         //se crea una constante para detectar si se escogio una opcion de resolucion
         const modal = document.getElementById('modal-crear-analisis');
-        const id = modal.dataset.id; // 🔥 aquí lo recuperas
+
+
         const select = document.getElementById('resolucionSelect');
+        const causa = document.querySelector('#causaAnalisis');
+        const solucion = document.querySelector('#solucionAnalisis');
+
         let valido = true;
-        if (select.value === "" || select.value === null) {
+        if (select.value === "" || select.value === null || solucion.value === "" || solucion.value === null || causa.value === "" || causa.value === null) {
             valido = false;
             select.classList.add('border-red-500'); // opcional visual
         } else {
@@ -26,21 +54,19 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!valido) {
             mostrarMensaje({
                 titulo: "Atención",
-                mensaje: "La resolucion es obligatoria",
+                mensaje: "La resolucion, causa y solucion son obligatorias",
                 tipo: "error"
             });
             return;
         }
-        crearAnalisis(id);
+
+        crearAnalisis(idTicket, estatus, container);
 
     });
-    //se pinta mientras cargan las opciones
-    document.getElementById("resolucionSelect").innerHTML = '<option disabled selected>Cargando...</option>'
-    valorFormulario();
-});
+}
 
-
-const valorFormulario = async () => {
+//traer los valores de resoluciones
+const valoresResolucion = async () => {
     //se pide el dato del formulario
     const dataForm = await request('/api/get-resolucion', 'GET');
     const r = dataForm;
@@ -48,6 +74,8 @@ const valorFormulario = async () => {
     llenarSelect("resolucionSelect", r.resolucion, "id_resolucion", "titulo");
 
 }
+
+//llena las opciones del select de resoluciones
 function llenarSelect(selectId, datos, idCampo, tectoCampo) {
     const select = document.getElementById(selectId);
     select.innerHTML = '<option value=""></option>';
@@ -71,45 +99,68 @@ function llenarSelect(selectId, datos, idCampo, tectoCampo) {
 
 
 //se manda toda la data del formulario para crear un analisis en la base de datos
-const crearAnalisis = async (id) => {
+const crearAnalisis = async (idTicket, idEstatus, container) => {
 
-    const id_resolucion = document.getElementById("resolucionSelect").value;
+    const idResolucion = document.getElementById("resolucionSelect").value;
     const causa = document.getElementById('causaAnalisis').value;
-    const solucion = document.getElementById("comentariosAnalisis").value;
-    const comentarios = document.getElementById('solucionAnalisis').value;
-    
+    const solucion = document.getElementById("solucionAnalisis").value;
+    const comentarios = document.getElementById('comentariosAnalisis').value;
+
+
     const data = {
-        id,
-        id_resolucion,
-        causa,
-        solucion,
-        comentarios
+        id_ticket: idTicket,
+        id_estatus: idEstatus,
+        id_resolucion: idResolucion,
+        causa: causa,
+        solucion: solucion,
+        comentarios: comentarios
     };
 
-console.log(data);
-    return;
 
+
+    //   confirmación
+    abrirModalConfirm({
+        titulo: "Cerrar ticket y crear analisis técnico",
+        mensaje: `¿Deseas cerrar este ticket? Ya no se podra editar`,
+        onConfirm: async () => {
+            await cerrarAnalisis({
+                data: data,
+                container: container
+            });
+        }
+    });
+}
+const cerrarAnalisis = async (data, container) => {
+
+    
     const response = await request('/api/new-analisis', 'POST', data);
     
+    console.log(response);
 
     if (response.status == 200) {
         mostrarMensaje({
             titulo: "Confirmacion",
             mensaje: "El Analisis se creo correctamente",
             tipo: "success"
-        });
+        }, container);
+
 
     } else {
         mostrarMensaje({
             titulo: "Error",
-            mensaje: response.body.mensaje || "No se pudo crear el analisis",
+            mensaje: response.mensaje || "No se pudo crear el analisis",
             tipo: "error"
-        });
+        }, container);
         return;
     }
+    //se limpia el modal para crear analisis tecnicos y se oculta nuevamente
+    const modal = document.getElementById('modal-crear-analisis');
+    document.getElementById("resolucionSelect").value = "";
+    document.getElementById("causaAnalisis").value = "";
+    document.getElementById("comentariosAnalisis").value = "";
+    document.getElementById("solucionAnalisis").value = "";
+    modal.classList.add('hidden');
 
-    // ✅ éxito
-    /* setTimeout(() => {
-        window.location.href = "/prueba/distribuidora-esqueleto/tickets";
-    }, 2000); */
+    //   recargar tabla
+    tablaTickets();
 }

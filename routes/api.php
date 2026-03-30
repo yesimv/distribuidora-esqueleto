@@ -17,6 +17,10 @@ return [
             'controller' => [AnalisisController::class, 'index'],
             'middleware' => ['auth']
         ],
+        '/get-analisis' => [
+            'controller' => [AnalisisController::class, 'getAnalisis'],
+            'middleware' => ['auth']
+        ],
         '/ticket-fecha' => [
             'controller' => [TicketController::class, 'date'],
             'middleware' => ['auth']

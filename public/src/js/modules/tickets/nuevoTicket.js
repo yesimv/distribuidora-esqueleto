@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .addEventListener("change", function () {
 
             const idDepartamento = this.value;
-            console.log(idDepartamento);
+            
             filtrarEmpleados(idDepartamento);
 
         });
@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .addEventListener("change", function () {
 
             const idDepartamentoSol = this.value;
-            console.log(idDepartamentoSol);
+            
             filtrarEmpleadosSol(idDepartamentoSol);
 
         });
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         selects.forEach(select => {
             //   excluir selects por id
-            if (select.id === 'empleadoSelect') {
+            if (select.id === 'empleadoSelect'|| select.id === 'resolucionSelect') {
                 return;
             }
             if (select.value === "" || select.value === null) {
@@ -200,7 +200,7 @@ function autoSeleccionarDepartamentoSol(idEmpleado) {
 const valoresFormulario = async () => {
     //se piden los datos para el formulario desde la base de datos
     const dataForms = await request('/api/get-form-data', 'GET');
-    console.log(dataForms);
+    
 
 
     const r = dataForms;
@@ -304,7 +304,7 @@ const crearTicket = async () => {
 
 
     const response = await request('/api/new-ticket', 'POST', data);
-    console.log(response);
+    
 
 
     if (response.status == 200) {
@@ -326,7 +326,7 @@ const crearTicket = async () => {
     // ✅ éxito
     setTimeout(() => {
         window.location.href = "/prueba/distribuidora-esqueleto/tickets";
-    }, 2000);
+    }, 1000);
 
     
 }

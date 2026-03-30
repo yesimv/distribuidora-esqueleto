@@ -7,15 +7,9 @@
   <title>
     Admin Tickets
   </title>
-  
+
   <link rel="icon" href="./public/assets/img/faviconGota.ico">
-
-
-  <!--  <link href="src/css/lib/DataTables/datatables.css" rel="stylesheet">
-  <link href="src/css/lib/DataTables/datatables-min.css" rel="stylesheet"> -->
   <link href="./public/assets/css/style.css" rel="stylesheet">
-
-
   <!--      para mover la fecha a el formato mexicano -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 

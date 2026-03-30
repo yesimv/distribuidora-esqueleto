@@ -7,6 +7,7 @@
 <script src="src/js/lib/jquery/jquery-3.7.0.js"></script>
 <script type='module' src="src/js/core/tabs.js"></script>
 <script type="module" src="src/js/modules/analisis/nuevoAnalisis.js"></script>
+<script type="module" src="src/js/core/verDataTicket.js"></script>
 
 
 

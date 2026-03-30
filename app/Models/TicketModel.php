@@ -101,6 +101,21 @@ class TicketModel
                 ];
         }
     }
+        //crear un nuevo ticket
+    public function createAnalisis(array $data)
+    {
+        try {
+            
+            
+            $response = $this->api->request('POST', 'tickets/close',$data);
+            return $response;
+        } catch (Exception $e) {
+            return [
+                'success'=> false,
+                'message'=> 'Error al conectarse a la API tickets: '. $e
+                ];
+        }
+    }
 
     //obtener datos del ticket
     public function getTicket(array $data)
