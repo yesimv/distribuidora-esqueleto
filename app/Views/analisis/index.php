@@ -1,7 +1,7 @@
     <?php
 
     use App\Core\Config; ?>
-    <div class="bg-white dark:bg-gray-800 pt-2">
+    <div class=" pt-2">
      <!--  <?php
       $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'index';
       ?>
@@ -22,7 +22,7 @@
             <div class="   py-4 border-y dark:border-gray-700">
               <h3>Filtro por fechas</h3>
               <!-- Elements -->
-              <div id="filtro-ticket-fecha" class=" grid items-end grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 w-fit gap-4 ">
+              <div id="filtro-ticket-fecha" class=" items-end  w-fit gap-4 ">
                 <div>
                   <label
                     class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
@@ -31,8 +31,8 @@
 
                   <div class="relative">
                     <input
-                      id='fch-inicio'
-                      name='fch-inicio'
+                      id='fch-inicio-analisis'
+                      name='fch-inicio-analisis'
                       type="text"
                       placeholder="Seleccione fecha"
                       class="input-fecha dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 pl-4 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
@@ -65,8 +65,8 @@
 
                   <div class="relative">
                     <input
-                      id='fch-fin'
-                      name='fch-fin'
+                      id='fch-fin-analisis'
+                      name='fch-fin-analisis'
                       type="text"
                       placeholder="Seleccione fecha"
                       class="input-fecha  dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 pl-4 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
@@ -110,13 +110,7 @@
       </div>
     </div>
 
-    <!-- cargado de pantalla -->
-    <div id="loader-overlay" class="fixed inset-0 bg-gray-950 flex items-center justify-center z-999999 ">
-      <div class="bg-white p-6 rounded-2xl shadow-theme-md flex flex-col items-center gap-3">
-        <div class="w-10 h-10 border-4 border-solid border-brand-500 border-t-transparent rounded-full animate-spin"></div>
-        <p class="text-sm text-gray-700">Cargando, por favor espera...</p>
-      </div>
-    </div>
+    
     
     <script>
       const BASE_URL = "<?php echo Config::get('app.base_url'); ?>";
@@ -125,9 +119,9 @@
 
 
     <script src="src/js/lib/DataTables/datatables.js"></script>
-    <script src="src/js/lib/DataTables/datatables-min.js"></script>
-    <script>
+    <script src="src/js/lib/DataTables/datatables.min.js"></script>
+    <!-- <script>
       window.$ = window.jQuery = require('jquery');
-    </script>
+    </script> -->
 
     <script type="module" src="src/js/modules/analisis/tablaAnalisis.js"></script>

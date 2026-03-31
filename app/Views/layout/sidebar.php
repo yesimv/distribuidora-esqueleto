@@ -4,7 +4,7 @@
     ?>
     <!-- ===== Sidebar Start ===== -->
     <aside
-      :class="!sidebarToggle ? 'lg:translate-x-0 w-[0px] hidden lg:block lg:w-[90px]' : 'lg:-translate-x-full w-[290px] px-5'"
+      :class="!sidebarToggle ? 'lg:translate-x-0 w-[0px] hidden lg:block lg:w-[90px]' : 'lg:-translate-x-full w-[290px] px-5'" x-cloak
       class="sidebar fixed left-0 top-0 z-999999  flex h-screen  flex-col overflow-y-hidden border-r border-gray-200 bg-white  dark:border-gray-800 dark:bg-black lg:static lg:translate-x-0">
       <!-- SIDEBAR HEADER -->
       <div
@@ -14,7 +14,7 @@
         <a href=<?php echo Config::get('app.base_url') . "/" ?>
           class="">
           <span class="logo" :class="!sidebarToggle ? 'hidden' : 'block lg:hidden'">
-            <img class="dark:hidden logo-full" src="assets/img/logo/masterfuel_connect.png" alt="Logo" />
+            <img class="dark:hidden logo-full " x-cloak src="assets/img/logo/masterfuel_connect.png" alt="Logo" />
             <img
               class="hidden dark:block logo-full"
               src="assets/img/logo/masterfuel_connect_blanco.png"
@@ -46,7 +46,7 @@
           <div>
             <h3 href=<?php echo Config::get('app.base_url') . "/" ?> class="mb-4 text-xs uppercase leading-[20px] text-gray-400">
               <span
-                class="menu-group-title pl-4"
+                class="menu-group-title pl-4" x-cloak
                 :class="!sidebarToggle ? 'hidden' : ''">
                 MENÚ
               </span>
@@ -93,7 +93,7 @@
                   </svg>
 
                   <span
-                    class="menu-item-text "
+                    class="menu-item-text " x-cloak
                     :class="!sidebarToggle ? 'hidden' : ''">
                     Dashboard
                   </span>
@@ -126,13 +126,13 @@
                   </svg>
 
                   <span
-                    class="menu-item-text"
+                    class="menu-item-text" x-cloak
                     :class="!sidebarToggle ? 'hidden' : ''">
                     Tickets
                   </span>
 
                   <svg
-                    class="menu-item-arrow absolute right-2.5 top-1/2 -translate-y-1/2 stroke-current"
+                    class="menu-item-arrow absolute right-2.5 top-1/2 -translate-y-1/2 stroke-current" x-cloak
                     :class="[(selected === 'Tickets') ? 'menu-item-arrow-active' : 'menu-item-arrow-inactive', !sidebarToggle ? 'hidden' : '' ]"
                     width="20"
                     height="20"
@@ -159,7 +159,7 @@
                       <a
 
                         href=<?php echo Config::get('app.base_url') . "/tickets" ?>
-                        class="menu-dropdown-item group"
+                        class="menu-dropdown-item group" x-cloak
                         :class="page === 'formElements' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                         Todos los tickets
                       </a>
@@ -167,7 +167,7 @@
                     <li>
                       <a
                         href=<?php echo Config::get('app.base_url') . "/ticket-create" ?>
-                        class="menu-dropdown-item group"
+                        class="menu-dropdown-item group" x-cloak
                         :class="page === 'formElements' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                         Crear tickets
                       </a>
@@ -199,13 +199,13 @@
                   </svg>
 
                   <span
-                    class="menu-item-text"
+                    class="menu-item-text" x-cloak
                     :class="!sidebarToggle ? 'hidden' : ''">
                     Analisis
                   </span>
 
                   <svg
-                    class="menu-item-arrow absolute right-2.5 top-1/2 -translate-y-1/2 stroke-current"
+                    class="menu-item-arrow absolute right-2.5 top-1/2 -translate-y-1/2 stroke-current" x-cloak
                     :class="[(selected === 'Analisis') ? 'menu-item-arrow-active' : 'menu-item-arrow-inactive', !sidebarToggle ? 'hidden' : '' ]"
                     width="20"
                     height="20"
@@ -232,7 +232,7 @@
                       <a
 
                         href=<?php echo Config::get('app.base_url') . "/analisis" ?>
-                        class="menu-dropdown-item group"
+                        class="menu-dropdown-item group" x-cloak
                         :class="page === 'formElements' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                         Todos los analisis
                       </a>
@@ -253,7 +253,7 @@
           <div>
             <h3 class="mb-4 text-xs uppercase leading-[20px] text-gray-400">
               <span
-                class="menu-group-title pl-4"
+                class="menu-group-title pl-4" x-cloak
                 :class="!sidebarToggle ? 'hidden' : ''">
                 Otros
               </span>
@@ -298,13 +298,13 @@
                   </svg>
 
                   <span
-                    class="menu-item-text"
+                    class="menu-item-text" x-cloak
                     :class="!sidebarToggle ? 'hidden' : ''">
-                    Ejemplos elementos
+                    Extras
                   </span>
 
                   <svg
-                    class="menu-item-arrow absolute right-2.5 top-1/2 -translate-y-1/2 stroke-current"
+                    class="menu-item-arrow absolute right-2.5 top-1/2 -translate-y-1/2 stroke-current" x-cloak
                     :class="[(selected === 'Tables') ? 'menu-item-arrow-active' : 'menu-item-arrow-inactive', !sidebarToggle ? 'hidden' : '' ]"
                     width="20"
                     height="20"
@@ -334,7 +334,7 @@
                         :class="page === 'allTickets' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
 
 
-                        class="menu-dropdown-item group cursor-pointer"
+                        class="menu-dropdown-item group cursor-pointer" x-cloak
                         :class="page === 'allTickets' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                         Formularios
                       </a>
@@ -346,7 +346,7 @@
                         :class="page === 'allTickets' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
 
 
-                        class="menu-dropdown-item group cursor-pointer"
+                        class="menu-dropdown-item group cursor-pointer" x-cloak
                         :class="page === 'allTickets' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                         Tabla
                       </a>
@@ -358,7 +358,7 @@
                         :class="page === 'allTickets' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
 
 
-                        class="menu-dropdown-item group cursor-pointer"
+                        class="menu-dropdown-item group cursor-pointer" x-cloak
                         :class="page === 'allTickets' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                         Página en blanco
                       </a>
@@ -370,7 +370,7 @@
                         :class="page === 'allTickets' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'"
 
 
-                        class="menu-dropdown-item group cursor-pointer"
+                        class="menu-dropdown-item group cursor-pointer" x-cloak
                         :class="page === 'allTickets' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                         Perfil
                       </a>
@@ -387,10 +387,11 @@
           <!-- User Area -->
           
 
-            <!-- Dropdown Start -->
+            <!-- Dropdown movil usuario -->
+             <div class="flex justify-center">
             <div 
-            :class="!sidebarToggle ? 'hidden' : ''"
-              class=" dark:bg-gray-dark absolute right-0 mt-[17px] flex w-[300px] flex-col  p-3 ">
+            :class="!sidebarToggle ? 'hidden' : ''" x-cloak
+              class=" absolute  mt-[17px] flex w-[300px] flex-col  p-3 ">
               <div>
                 <span
                   class="text-theme-sm block font-medium text-gray-700 dark:text-gray-400">
@@ -487,6 +488,7 @@
                 Cerrar sesión
               </a>
 
+            </div>
             </div>
             <!-- Dropdown End -->
          

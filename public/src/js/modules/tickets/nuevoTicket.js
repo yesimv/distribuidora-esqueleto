@@ -5,6 +5,7 @@ let departamentosGlobal = [];
 
 
 document.addEventListener("DOMContentLoaded", function () {
+    
     const tablaFechasTicket = document.querySelector('#formulario-ticket-nuevo');
 
     const departamentoSelect = document.getElementById("departamentoSelect");

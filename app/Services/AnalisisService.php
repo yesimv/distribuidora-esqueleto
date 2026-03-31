@@ -98,8 +98,9 @@ class AnalisisService
                 ];
             };
 
-            Logger::module('Analisis', 'Datos nuevos', $listaAnalisis);
-            return $listaAnalisis;
+            $listaConEstilos = $this->ticketTables($listaAnalisis);
+            Logger::module('Tickets', 'Datos nuevos', $listaConEstilos);
+            return $listaConEstilos;
         } catch (\Exception $e) {
             Logger::module('Analisis', 'Error en la funcion index al llenar el array ' . $e, [$response, $listaAnalisis]);
         }

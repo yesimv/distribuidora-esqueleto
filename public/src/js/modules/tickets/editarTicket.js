@@ -2,13 +2,22 @@ import { request } from '../../core/http.js';
 import { mostrarMensaje, abrirModalConfirm, initModal } from "../../core/modal.js";
 let idTicket = null;
 let empleadosGlobal = [];
+let id = null;
 document.addEventListener("DOMContentLoaded", async function () {
+    //decodifica el link mandado para obtenero el id
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('data');
+    if (encoded) {
+        const data = atob(encoded);
+        id = data.replace('tk_', '').replace('_secure', '');
+    }
+
+
+    
+
+
 
     const tablaFechasTicket = document.querySelector('#formulario-ticket-editar');
-
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-
     await valoresFormulario(); //   PRIMERO llenar selects
 
     if (id) {
@@ -139,7 +148,7 @@ const valoresFormulario = async () => {
     //se piden los datos para el formulario desde la base de datos
     const dataForms = await request('/api/get-form-data', 'GET');
 
-    console.log(dataForms);
+
     const r = dataForms;
     empleadosGlobal = r.empleado;
 
@@ -196,13 +205,14 @@ function llenarSelect(selectId, datos, idCampo, textoCampo) {
 
 async function cargarTicket(id) {
     try {
+        document.getElementById('loader-overlay').classList.remove('hidden');
         const response = await request('/api/get-ticket', 'POST', {
             id_ticket: id
         });
 
         if (response.status == 200) {
             const ticket = response.body.resultado;
-
+            document.getElementById('loader-overlay').classList.remove('hidden');
             llenarFormulario(ticket);
 
         } else {
@@ -218,7 +228,7 @@ async function cargarTicket(id) {
 }
 
 function llenarFormulario(ticket) {
-    console.log(ticket);
+
     idTicket = ticket.id_ticket;
     document.getElementById('departamentoSolInput').value = ticket.departamento_solicitante;
     document.getElementById('empleadoSolInput').value = ticket.empleado_solicitante;
@@ -237,7 +247,7 @@ function llenarFormulario(ticket) {
     document.getElementById('enTiempo').checked = ticket.se_creo_en_tiempo == 1;
     document.getElementById('descripcionArea').value = ticket.descripcion;
     document.getElementById('comentariosArea').value = ticket.comentarios;
-
+    document.getElementById('loader-overlay').classList.add('hidden');
 }
 
 
@@ -285,6 +295,7 @@ const editarTicket = async () => {
 
 
 
+    document.getElementById('loader-overlay').classList.add('hidden');
     const response = await request('/api/edit-ticket', 'POST', data);
 
 

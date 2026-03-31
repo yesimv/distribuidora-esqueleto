@@ -14,7 +14,7 @@ class TicketController extends BaseController
     public function create()
     {
 
-        $this->view('tickets/nuevo-ticket', ['pageName' => 'Tickets']);
+        $this->view('tickets/nuevo-ticket', ['pageName' => 'Crear Ticket']);
     }
     public function dataTable()
     {
@@ -23,7 +23,7 @@ class TicketController extends BaseController
     }
     public function editar()
     {   
-        $this->view('tickets/componentes/editar-ticket', ['pageName' => 'Tickets']);
+        $this->view('tickets/componentes/editar-ticket', ['pageName' => 'Editar Ticket']);
       
     }
 

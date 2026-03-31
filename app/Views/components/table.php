@@ -362,3 +362,4 @@
               </div>
             </div>
           </div>
+          <script type="module" src="src/js/modules/component/component.js"></script>

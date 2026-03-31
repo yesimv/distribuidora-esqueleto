@@ -11,12 +11,11 @@ export function abrirAnalisis(idTicket, estatus, container) {
 
     const modal = document.getElementById('modal-crear-analisis');
     modal.classList.remove('hidden');
-    console.log(estatus);
-    console.log(container);
+
     //toma el estatus anterios
     const estatusOriginal = container.dataset.actual;
 
-    console.log(estatusOriginal);
+
 
     const span = container.querySelector(".selected-estatus");
 
@@ -132,10 +131,10 @@ const crearAnalisis = async (idTicket, idEstatus, container) => {
 }
 const cerrarAnalisis = async (data, container) => {
 
-    
+    document.getElementById('loader-overlay').classList.add('hidden');
     const response = await request('/api/new-analisis', 'POST', data);
     
-    console.log(response);
+
 
     if (response.status == 200) {
         mostrarMensaje({
@@ -162,5 +161,7 @@ const cerrarAnalisis = async (data, container) => {
     modal.classList.add('hidden');
 
     //   recargar tabla
-    tablaTickets();
+    if (document.querySelector('#tabla-tickets')) {
+        await tablaTickets();
+    }
 }

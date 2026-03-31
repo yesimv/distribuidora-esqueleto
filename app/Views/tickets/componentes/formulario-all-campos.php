@@ -137,7 +137,7 @@
                       <div class="         ">
                         <label
                           class="mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-400">
-                          Area afectada
+                          Sistema involucrado
                         </label>
                         <div
                           x-data="{ isOptionSelected: false }"

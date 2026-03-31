@@ -1,4 +1,6 @@
-    <?php use App\Core\Config; ?>
+    <?php
+
+    use App\Core\Config; ?>
     <!doctype html>
     <html lang="es">
 
@@ -40,7 +42,7 @@
 
                 <!-- ===== Main Content Start ===== -->
                 <main>
-                    <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+                    <div x-cloak class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
                         <!-- Breadcrumb Start -->
                         <div x-data="{ pageName: '<?= $pageName ?? "Dashboard" ?>' }">
                             <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -79,7 +81,7 @@
                             </div>
                         </div>
                         <!-- Breadcrumb End -->
-                        
+
                         <?php echo $content; ?>
 
                     </div>
@@ -90,8 +92,10 @@
             <!-- ===== Content Area End ===== -->
 
         </div>
+
+
         <!-- ===== modal de confirmacion ===== -->
-        <div id="modal-confirm" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-999999 ">
+        <div id="modal-confirm" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-99999 ">
             <div class="bg-white dark:bg-gray-900 p-6 rounded-xl  w-[90%] max-w-[400px] min-w-[300px] mx-auto translate-y-10 shadow-theme-md">
 
                 <h2 id="modal-title" class="text-lg font-semibold mb-4">Confirmar</h2>
@@ -108,7 +112,7 @@
             </div>
         </div>
         <!-- ===== modal informativo ===== -->
-        <div id="modal-msg" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-999999">
+        <div id="modal-msg" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-9999">
 
             <div class="bg-white dark:bg-gray-900 p-6 rounded-xl w-[90%] max-w-[400px] min-w-[300px] shadow-theme-md">
 
@@ -126,9 +130,9 @@
         </div>
         <!-- ===== modal datos ticket ===== -->
 
-        <div id="modal-ver-ticket" class="fixed inset-0 bg-black/50 hidden flex items-start justify-center overflow-y-auto py-10 z-999999">
+        <div id="modal-ver-ticket" class="fixed inset-0 bg-black/50 hidden flex items-start justify-center overflow-y-auto py-10 z-9999">
 
-            <div class=" modal-info-ticket  w-[90%] mx-auto rounded-2xl overflow-hidden">
+            <div class=" modal-info-ticket  w-[90%]  mx-auto rounded-2xl overflow-hidden">
 
                 <!-- HEADER -->
                 <div class="flex justify-between items-center px-6 py-4 border-b dark:border-gray-700 ">
@@ -146,7 +150,7 @@
                             <div>
                                 <div class="flex flex-col w-fit w-40">
                                     <label class="text-xs text-gray-500">ID Ticket</label>
-                                    <div id="ver-id" ></div>
+                                    <div id="ver-id"></div>
                                 </div>
                                 <div class="flex flex-col w-fit w-40 pl-4">
                                     <label class="text-xs text-gray-500">Resolución</label>
@@ -193,9 +197,15 @@
                             </div>
                         </div>
                         <!-- ESTACION -->
-                        <div class="flex flex-col">
-                            <label class="text-xs text-gray-500">Estación</label>
-                            <div id="ver-estacion"></div>
+                        <div class="grid-info-empleado">
+                            <div class="flex flex-col">
+                                <label class="text-xs text-gray-500">Estación</label>
+                                <div id="ver-estacion"></div>
+                            </div>
+                            <div class="flex flex-col ">
+                                <label class="text-xs text-gray-500">Nivel de afectación</label>
+                                <div id="ver-nivel-afectacion"></div>
+                            </div>
                         </div>
 
                     </div>
@@ -205,7 +215,7 @@
                             <label class="text-xs text-gray-500">Título</label>
                             <div id="ver-titulo"></div>
                         </div>
-                        
+
                         <!-- DESCRIPCIÓN -->
                         <div class="flex flex-col">
                             <label class="text-xs text-gray-500">Descripción</label>
@@ -220,7 +230,7 @@
                         <div class="grid-info-detalles">
 
                             <div class="flex flex-col">
-                                <label class="text-xs text-gray-500">Área afectada</label>
+                                <label class="text-xs text-gray-500">Sistema involucrado</label>
                                 <div id="ver-area-afectada"></div>
                             </div>
                             <div class="flex flex-col">
@@ -229,18 +239,20 @@
                             </div>
 
 
+
                             <div class="flex flex-col w-40">
-                                <label class="text-xs text-gray-500">Tipo</label>
+                                <label class="text-xs text-gray-500">Tipo de solicitud</label>
                                 <div id="ver-tipo"></div>
                             </div>
 
 
-
-
-                            <div class="flex flex-col ">
-                                <label class="text-xs text-gray-500">Nivel de afectación</label>
-                                <div id="ver-nivel-afectacion"></div>
+                            <!-- Creado en tiempo -->
+                            <div class="flex flex-col w-40">
+                                <label class="text-xs text-gray-500">Se creo en tiempo</label>
+                                <div id="en-tiempo-ticket"></div>
                             </div>
+
+
 
                             <div class="flex flex-col">
                                 <label class="text-xs text-gray-500">Prioridad</label>
@@ -270,7 +282,7 @@
             </div>
         </div>
         <!-- modal Analisis tecnico -->
-        <div id="modal-crear-analisis" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50 px-4 ">
+        <div id="modal-crear-analisis" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50 px-4 z-9999">
             <div class=" modal-info-ticket body-analisis-crear  w-[90%] mx-auto rounded-2xl overflow-hidden">
                 <div class="px-5 py-4 sm:px-6 sm:py-5">
                     <h3
@@ -388,6 +400,13 @@
             </div>
         </div>
 
+        <!-- cargado de pantalla -->
+        <div id="loader-overlay" class="fixed inset-0 flex items-center justify-center z-999999">
+            <div class="">
+                <div class=""></div>
+                <p class="">Cargando, por favor espera...</p>
+            </div>
+        </div>
 
         <!-- ===== Texto informativo que sigue al cursor ===== -->
         <div id="tooltip" class="pop-text"></div>

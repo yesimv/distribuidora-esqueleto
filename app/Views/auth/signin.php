@@ -18,20 +18,14 @@
          darkMode = JSON.parse(localStorage.getItem('darkMode'));
          $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
   :class="{'dark bg-gray-900': darkMode === true}">
-  <!-- ventana de carga -->
-  <div id="loader-overlay" class="fixed inset-0 bg-gray-950 flex items-center justify-center z-150 hidden">
-
-    <div class="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center gap-3">
-
-
-      <!-- spinner -->
-      <div class="w-10 h-10 border-4 border-solid border-brand-500 border-t-transparent rounded-full animate-spin"></div>
-
-      <p class="text-sm text-gray-700">Cargando, por favor espera...</p>
-
-    </div>
-
-  </div>
+  
+  <!-- cargado de pantalla -->
+        <div id="loader-overlay" class="fixed inset-0 flex items-center justify-center z-999999">
+            <div class="">
+                <div class=""></div>
+                <p class="">Cargando, por favor espera...</p>
+            </div>
+        </div>
   <!-- ventana de carga -->
   <!-- ===== Preloader Start ===== -->
   <div

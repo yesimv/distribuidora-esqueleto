@@ -1,12 +1,30 @@
 //limpia las celdas que no tienen empleado asignado
 function limpiarExport(data) {
 
-    let texto = data.replace(/<[^>]*>?/gm, '').trim();
+
+    const temp = document.createElement('div');
+    temp.innerHTML = data;
+
+    // 1. Caso: select personalizado (el importante)
+    const selected = temp.querySelector('.selected-estatus');
+    if (selected) {
+        return selected.textContent.trim();
+    }
+
+    // 2. Caso: estatus normal
+    const normal = temp.querySelector('.td-estatus');
+    if (normal) {
+        return normal.textContent.trim();
+    }
+
+    // 3. Fallback (por si algo raro pasa)
+    let texto = temp.textContent.trim();
 
     if (
         texto.includes('Asignar') ||
         texto.includes('Asignármelo') ||
-        texto === ''
+        texto === '' ||
+        texto.includes('Sin')
     ) {
         return 'Sin asignar';
     }
@@ -97,7 +115,7 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
 
                         if (!puedeVer || row.id_estatus == 3 || row.id_estatus == 4 || row.id_estatus == 5) {
 
-                            accionesAsignacion = `<span>${row.empleado_asignado}</span>`;
+                            accionesAsignacion = `<span>${row.empleado_asignado || 'Sin asignar'}</span>`;
 
                         } else if (noAsignado) {
 
@@ -146,7 +164,7 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
 
                         } else {
 
-                            accionesAsignacion = `<span>${row.empleado_asignado}</span>`;
+                            accionesAsignacion = `<span>${row.empleado_asignado || 'Sin asignar'}</span>`;
                         }
 
                         return `<div data-empleado="${row.empleado_asignado || 'Sin asignar'}">
@@ -167,7 +185,7 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
                             <div>
                                 <p>Ticket eliminado</p>
                             </div>`
-                        } else if(row.id_estatus == 3 || row.id_estatus == 4 || row.id_estatus == 5 ) {
+                        } else if (row.id_estatus == 3 || row.id_estatus == 4 || row.id_estatus == 5) {
                             return `
                                 <div class="">
                                     <button class="btn-view group action-btn" data-tooltip="Ver Ticket" data-id="${row.id_ticket}">
@@ -183,7 +201,7 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
                                     
                                 </div>
                                 `;
-                        }else{
+                        } else {
                             return `
                         <div class="flex gap-2">
                             <button class="btn-view group action-btn" data-tooltip="Ver Ticket" data-id="${row.id_ticket}">
@@ -214,6 +232,7 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
                     }
 
                 },);
+
 
         } else if (extras && extras.includes('AccionesAnalisis')) {
             cols.push(
@@ -249,6 +268,15 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
             )
         };
 
+        // 🔥 Detectar si hay algún jefe de depto para agregar esta columan extra
+        const mostrarDeptoAsignado = dataSource.some(item => item.es_jefe_depto == 1);
+        // 🔥 Agregar columna dinámicamente
+        if (mostrarDeptoAsignado) {
+            cols.splice(7, 0, { // posición donde la quieres
+                data: 'departamento_asignado',
+                title: 'Dept. asignado'
+            });
+        }
 
         const dt = new DataTable(nombreTabla, {
 

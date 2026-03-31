@@ -291,3 +291,4 @@
 
     <!-- ===== Content Area End ===== -->
 
+<script type="module" src="src/js/modules/component/component.js"></script>

@@ -25,15 +25,20 @@ const configFecha = {
 };
 
 document.addEventListener("DOMContentLoaded", async function () {
-    await tablaTickets()
-    fp('#fch-fin', configFecha);
-    fp('#fch-inicio', configFecha);
+    if (document.querySelector('#tabla-tickets')) {
+        await tablaTickets();
+    }
+    fp('#fch-fin-ticket', configFecha);
+    fp('#fch-inicio-ticket', configFecha);
     eventos();
     buttonPop();
 });
 
 const eventos = () => {
 
+    if (!document.querySelector('#tabla-tickets')) {
+        return;
+    }
     const tabla = document.querySelector('#tabla-tickets');
     const btn = document.querySelector('#btn-filtro-fecha');
     const btnClose = document.querySelector('#msg-info-ticket-close');
@@ -63,11 +68,6 @@ const eventos = () => {
             // validar
             if (estatus === 'Cancelado' || estatus === 'Cerrado' || estatus === 'Reasignado') {
                 abrirModalVerTicket(id);
-                /* mostrarMensaje({
-                    titulo: "Atención",
-                    mensaje: "El ticket ya se encuentra cancelado o resuelto y no se puede editar. Favor de crear uno nuevo.",
-                    tipo: "error"
-                }); */
                 return; // NO continuar
             }
 
@@ -161,7 +161,7 @@ const eventos = () => {
             const estatus = option.dataset.value;
 
             if (estatus == 3 || estatus == 4 || estatus == 5) {
-                abrirAnalisis(idTicket, estatus,container);
+                abrirAnalisis(idTicket, estatus, container);
             } else if (estatus == 2) {
                 //   confirmación
                 abrirModalConfirm({
@@ -180,7 +180,7 @@ const eventos = () => {
             }
 
 
-        
+
         }
 
         if (idEmpleado) {
@@ -219,7 +219,7 @@ const eventos = () => {
     btnClose.addEventListener('click', () => {
         document.getElementById('modal-ver-ticket')
             .classList.add('hidden');
-        
+
     })
     if (!btn) return;
 
@@ -234,8 +234,10 @@ const eventos = () => {
 async function abrirEditarTab(id) {
 
     const tab = document.getElementById('editar');
-    window.location.href = `${BASE_URL}/ticket-editar?id=${id}`;
-    //window.location.href=`${BASE_URL}/ticket-editar?data=Sx12-825f${id}p3ads4ajse`;
+
+    //codifica el link para mandar seguro el id
+    const encoded = btoa(`tk_${id}_secure`);
+    window.location.href = `${BASE_URL}/ticket-editar?data=${encoded}`;
     return;
 
 }
@@ -252,7 +254,21 @@ const configTable = () => {
                 `<span class="${row.prioridad_class}">${data}</span>`
         },
 
-        { data: 'create_date', title: 'Fecha creación' },
+        {
+            data: 'create_date',
+            title: 'Fecha creación',
+            render: function (data) {
+                if (!data) return '';
+
+                const fecha = new Date(data);
+
+                const dia = String(fecha.getDate()).padStart(2, '0');
+                const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+                const anio = fecha.getFullYear();
+
+                return `${dia}/${mes}/${anio}`;
+            }
+        }
     ];
 }
 
@@ -261,31 +277,35 @@ export const tablaTickets = async (fechas = null) => {
     const extras = ['AccionesTicket'];
 
     let dataSource = null;
+    document.getElementById('loader-overlay').classList.remove('hidden');
     if (fechas) {
         dataSource = await request('/api/ticket-fecha', 'POST', fechas);
     } else {
         dataSource = await request('/api/tickets', 'GET');
     }
-    console.log(dataSource);
-    
+
+
 
     app.dt = await tabla('#tabla-tickets', config, dataSource, extras);
 }
 
 const filtrarPorFecha = async () => {
     //!!VALIDAR QUE FECHAS NO ESTEN VACIAS Y MOSTRAR ALERTA DE QUE SON OBLIGATORIAS!!!!
-    const fInicio = document.getElementById('fch-inicio').value;
-    const fFinal = document.getElementById('fch-fin').value;
+    const fInicio = document.getElementById('fch-inicio-ticket').value;
+    const fFinal = document.getElementById('fch-fin-ticket').value;
     const fechas = {
         'fchInicio': fInicio,
         'fchFinal': fFinal
     };
 
-    tablaTickets(fechas);
+    if (document.querySelector('#tabla-tickets')) {
+        await tablaTickets();
+    }
 }
 
 async function borrarTicket(id) {
     try {
+        document.getElementById('loader-overlay').classList.add('hidden');
         const response = await request('/api/borrar-ticket', 'POST', {
             id_ticket: id
         });
@@ -298,7 +318,9 @@ async function borrarTicket(id) {
             });
 
             //   recargar tabla
-            tablaTickets();
+            if (document.querySelector('#tabla-tickets')) {
+                await tablaTickets();
+            }
 
         } else {
             mostrarMensaje({
@@ -321,6 +343,7 @@ async function borrarTicket(id) {
 async function asignarTicket(data, rowElement) {
     try {
 
+        document.getElementById('loader-overlay').classList.add('hidden');
         const response = await request('/api/asignar-ticket', 'POST', data);
 
         if (response.status == 200) {
@@ -419,7 +442,9 @@ async function actualizarEstatus(data, rowElement) {
                 tipo: "success"
             });
             //   recargar tabla
-            tablaTickets();
+            if (document.querySelector('#tabla-tickets')) {
+                await tablaTickets();
+            }
 
         } else {
             mostrarMensaje({

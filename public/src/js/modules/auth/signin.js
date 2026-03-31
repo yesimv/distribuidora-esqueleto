@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 const eventos = () => {
+    document.getElementById('loader-overlay').classList.add('hidden');
     const formulario = document.querySelector('#formulario-login');
 
     document.getElementById('email').addEventListener('input', function () {

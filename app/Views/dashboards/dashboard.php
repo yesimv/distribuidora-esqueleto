@@ -810,4 +810,4 @@
         </div>
       </main>
       <!-- ===== Main Content End ===== -->
-<script type="module" src="src/js/modules/dashboard/dashboard.js"></script>
+<script type="module" src="src/js/modules/component/component.js"></script>

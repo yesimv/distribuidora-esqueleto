@@ -7,7 +7,7 @@
       class=" flex w-full items-center justify-end lg:hidden gap-2 border-b border-gray-200 px-3 py-3 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4 dark:border-gray-800">
       <!-- Hamburger Toggle BTN -->
       <button
-        :class="sidebarToggle ? 'lg:bg-transparent ' : 'dark:lg:bg-transparent '"
+        :class="sidebarToggle ? 'lg:bg-transparent ' : 'dark:lg:bg-transparent '"  x-cloak
         class=" z-99999 flex h-10 w-10 items-center justify-center rounded-lg dark:bg-gray-800  bg-gray-100 border-gray-200 text-gray-500 lg:h-11 lg:w-11 lg:border dark:border-gray-800 dark:text-gray-400"
         @click.stop="sidebarToggle = !sidebarToggle">
         <svg
@@ -40,7 +40,7 @@
         </svg>
         <!-- cross icon -->
           <svg
-            :class="!sidebarToggle ? 'hidden' : 'block lg:hidden'"
+            :class="!sidebarToggle ? 'hidden' : 'block lg:hidden'"  x-cloak
             class="fill-current"
             width="24"
             height="24"
@@ -63,7 +63,7 @@
     </div>
 
     <div
-      :class="menuToggle ? 'flex' : 'hidden'"
+      :class="menuToggle ? 'flex' : 'hidden'" x-cloak
       class="shadow-theme-md w-full items-center justify-between gap-4 px-5 py-4 lg:flex lg:justify-end lg:px-0 lg:shadow-none">
       <div class="2xsm:gap-3 flex items-center gap-2">
         <!-- Dark Mode Toggler -->

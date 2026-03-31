@@ -1460,3 +1460,4 @@
               </div>
             </div>
             <!-- ====== Form Elements Section End -->
+             <script type="module" src="src/js/modules/component/component.js"></script>

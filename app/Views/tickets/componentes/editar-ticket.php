@@ -75,8 +75,6 @@
                           </span>
                         </div>
                       </div>
-
-
                       <!-- Titulo -->
                       <div class="         ">
                         <label
@@ -164,7 +162,6 @@
                           </span>
                         </div>
                       </div>
-
                       <!-- Tipo de solicitud -->
                       <div class="         ">
                         <label
@@ -242,7 +239,7 @@
                       <div class="         ">
                         <label
                           class="mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-400">
-                          Area afectada
+                          Sistema involucrado
                         </label>
                         <div
                           x-data="{ isOptionSelected: false }"
@@ -274,9 +271,6 @@
                           </span>
                         </div>
                       </div>
-
-
-
                       <!-- Nivel de afectacion -->
                       <div class="         ">
                         <label
@@ -313,7 +307,6 @@
                           </span>
                         </div>
                       </div>
-
                       <!-- Prioridad -->
                       <div class="         ">
                         <label
@@ -349,9 +342,6 @@
                           </span>
                         </div>
                       </div>
-
-
-
                       <!-- Canal de contacto -->
                       <div class="         ">
                         <label
@@ -389,7 +379,6 @@
                           </span>
                         </div>
                       </div>
-
                       <!-- Creado en tiempo -->
                       <div x-data="{ switcherToggle: true }" class="flex items-end">
                         <label
@@ -520,13 +509,8 @@
 
 
             </div>
-            <!-- cargado de pantalla -->
-            <div id="loader-overlay" class="fixed inset-0 bg-gray-950 flex items-center justify-center z-999999 ">
-              <div class="bg-white p-6 rounded-2xl shadow-theme-md flex flex-col items-center gap-3">
-                <div class="w-10 h-10 border-4 border-solid border-brand-500 border-t-transparent rounded-full animate-spin"></div>
-                <p class="text-sm text-gray-700">Cargando, por favor espera...</p>
-              </div>
-            </div>
+
             <!-- ====== Form Elements Section End -->
+            
 
             <script type="module" src="src/js/modules/tickets/editarTicket.js"></script>
