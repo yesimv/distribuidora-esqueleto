@@ -35,6 +35,10 @@ return [
             'controller' => [TicketController::class, 'index'],
             'middleware' => ['auth']
         ],
+        '/tickets-solicitados' => [
+            'controller' => [TicketController::class, 'indexSol'],
+            'middleware' => ['auth']
+        ],
         '/sistema-ticket' => [
             'controller' => [SistemaController::class, 'index'],
             'middleware' => ['auth']

@@ -1,12 +1,13 @@
 import { request } from '../../core/http.js';
-import { mostrarMensaje,initModal,abrirModalConfirm } from "../../core/modal.js";
+import { mostrarMensaje, initModal, abrirModalConfirm } from "../../core/modal.js";
 let empleadosGlobal = [];
 let departamentosGlobal = [];
-
+let estacionGlobal = [];
 
 document.addEventListener("DOMContentLoaded", function () {
+
     
-    const tablaFechasTicket = document.querySelector('#formulario-ticket-nuevo');
+    const campoExtra = document.querySelector('.ticket-nuevo-campo-extra');
 
     const departamentoSelect = document.getElementById("departamentoSelect");
     const departamentoSolSelect = document.getElementById("departamentoSolSelect");
@@ -15,6 +16,13 @@ document.addEventListener("DOMContentLoaded", function () {
     departamentoSelect.addEventListener("change", function () {
 
         const valorDepto = this.value;
+
+        const deptos = (window.deptos_coordinador || []).map(Number);
+        const esCoordAsignado = deptos.includes(Number(valorDepto));
+        const esSuper = Boolean(window.is_superuser);
+        if(esSuper || esCoordAsignado){
+            document.getElementById('formulario-ticket-nuevo').classList.remove('hidden');
+        }
         if (valorDepto == departamentoSolSelect.value) {
 
             //   habilitar selects
@@ -28,6 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 "id_departamento",
                 "descripcion"
             );
+
+            //volver a llenar estacion
+            llenarSelect("estacionSelect", estacionGlobal, "id_estacion", "descripcion");
 
             //   filtrar empleados por departamento seleccionado
             const empleadosFiltrados = empleadosGlobal.filter(emp =>
@@ -50,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .addEventListener("change", function () {
 
             const idDepartamento = this.value;
-            
+
             filtrarEmpleados(idDepartamento);
 
         });
@@ -69,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .addEventListener("change", function () {
 
             const idDepartamentoSol = this.value;
-            
+
             filtrarEmpleadosSol(idDepartamentoSol);
 
         });
@@ -92,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         selects.forEach(select => {
             //   excluir selects por id
-            if (select.id === 'empleadoSelect'|| select.id === 'resolucionSelect') {
+            if (select.id === 'empleadoSelect' || select.id === 'resolucionSelect') {
                 return;
             }
             if (select.value === "" || select.value === null) {
@@ -130,12 +141,12 @@ const eventos = () => {
         abrirModalConfirm({
             titulo: "Cancelar registro",
             mensaje: `¿Seguro que deseas cancelar el registro?, Ningún cambio será guardado.`,
-            
+
             onConfirm: async () => {
                 window.location.href = "/prueba/distribuidora-esqueleto/tickets";
             }
         });
-        
+
 
     });
     //botones del modal
@@ -201,15 +212,16 @@ function autoSeleccionarDepartamentoSol(idEmpleado) {
 const valoresFormulario = async () => {
     //se piden los datos para el formulario desde la base de datos
     const dataForms = await request('/api/get-form-data', 'GET');
-    
+
 
 
     const r = dataForms;
     empleadosGlobal = r.empleado;
     departamentosGlobal = r.departamento;
+    estacionGlobal = r.estacion;
     llenarSelect("departamentoSolSelect", r.departamento_sol, "id_departamento", "descripcion");
     llenarSelect("empleadoSolSelect", r.empleado_sol, "id_empleado", "descripcion");
-    llenarSelect("estacionSelect", r.estacion, "id_estacion", "descripcion");
+    llenarSelect("estacionSelect", r.estacion_inicial, "id_estacion", "descripcion");
 
     llenarSelect("areaSelect", r.area_afectada, "id_area_afectada", "descripcion");
     llenarSelect("canalSelect", r.canal_contacto, "id_canal_contacto", "descripcion");
@@ -281,6 +293,7 @@ const crearTicket = async () => {
     const se_creo_en_tiempo = document.getElementById("enTiempo").checked;
     const descripcion = document.getElementById('descripcionArea').value;
     const comentarios = document.getElementById("comentariosArea").value;
+    const id_ticket_relacionado = document.getElementById("ticketRel").value;
 
     const data = {
         id_departamento_sol,
@@ -299,13 +312,14 @@ const crearTicket = async () => {
         id_canal_contacto,
         se_creo_en_tiempo,
         descripcion,
-        comentarios
+        comentarios,
+        id_ticket_relacionado
     };
 
 
 
     const response = await request('/api/new-ticket', 'POST', data);
-    
+
 
 
     if (response.status == 200) {
@@ -329,6 +343,6 @@ const crearTicket = async () => {
         window.location.href = "/prueba/distribuidora-esqueleto/tickets";
     }, 1000);
 
-    
+
 }
 

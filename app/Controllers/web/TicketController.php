@@ -11,6 +11,11 @@ class TicketController extends BaseController
 
         $this->view('tickets/index', ['pageName' => 'Tickets']);
     }
+    public function indexSol()
+    {
+
+        $this->view('tickets/tickets-solicitados', ['pageName' => 'Tickets']);
+    }
     public function create()
     {
 

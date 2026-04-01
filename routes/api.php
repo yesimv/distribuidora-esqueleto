@@ -26,6 +26,7 @@ return [
             'middleware' => ['auth']
         ],
         
+        
         '/new-ticket' => [
             'controller' => [TicketController::class, 'create'],
             'middleware' => ['auth']
@@ -58,13 +59,18 @@ return [
             'controller' => [AnalisisController::class, 'date'],
             'middleware' => ['auth']
         ],
+        '/tickets' => [
+            'controller' => [TicketController::class, 'index'],
+            'middleware' => ['auth']
+        ],
         
         
 
     ],
     'GET' => [
-        '/tickets' => [
-            'controller' => [TicketController::class, 'index'],
+        
+        '/tickets-solicitados' => [
+            'controller' => [TicketController::class, 'indexSol'],
             'middleware' => ['auth']
         ],
         '/is-coordinador' => [

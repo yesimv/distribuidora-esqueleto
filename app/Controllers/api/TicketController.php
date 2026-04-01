@@ -19,14 +19,16 @@ class TicketController extends BaseController
     public function index()
     {
 
-        $this->validateMethod('GET');
+        $this->validateMethod('POST');
 
+        $data = $this->getJsonInput();  //atrapa los datos que le mandaste en el POST
         $ticketService = $this->ticketService;
-
-        $result = $ticketService->index();
+        
+        $result = $ticketService->index($data);
 
         $this->json($result);
     }
+   
     public function isCoordinador()
     {
         $this->validateMethod('GET');
@@ -40,11 +42,12 @@ class TicketController extends BaseController
 
         $this->validateMethod('POST');
         $data = $this->getJsonInput();  //atrapa los datos que le mandaste en el POST
-
+        
         $ticketService = $this->ticketService;
         $result = $ticketService->rangoFecha($data);
         $this->json($result);
     }
+    
     //se traen todos los valores posibles para el formulario de tickets
     public function formData()
     {

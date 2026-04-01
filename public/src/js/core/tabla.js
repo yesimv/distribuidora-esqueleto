@@ -32,6 +32,7 @@ function limpiarExport(data) {
     return texto;
 }
 export function tabla(nombreTabla, columnas, dataSource, extras = null) {
+    
     if (DataTable.isDataTable(nombreTabla)) {
         new DataTable(nombreTabla).destroy();
     }
@@ -40,7 +41,7 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
         const tablaElement = document.querySelector(nombreTabla);
         const cols = [...columnas];
         /*si se define el uso de los botones de accion*/
-        if (extras && extras.includes('AccionesTicket')) {
+        if (extras && extras.includes('AccionesTicket') ) {
             cols.push(
                 {
                     data: 'estatus', title: 'Estatus',
@@ -187,48 +188,56 @@ export function tabla(nombreTabla, columnas, dataSource, extras = null) {
                             </div>`
                         } else if (row.id_estatus == 3 || row.id_estatus == 4 || row.id_estatus == 5) {
                             return `
-                                <div class="">
-                                    <button class="btn-view group action-btn" data-tooltip="Ver Ticket" data-id="${row.id_ticket}">
-                                
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="#d97706">
-                                        <path d="M200-200h57l391-391-57-57-391 391v57Zm-80 
-                                        80v-170l528-528q12-12 27-18t31-6q16 0 31 
-                                        6t27 18l57 57q12 12 18 27t6 31q0 16-6 
-                                        31t-18 27L290-120H120Zm640-584-56-56 56 
-                                        56ZM591-620l-28-28 57 57-29-29Z"/>
+                                <div>
+                                    <button class="btn-view group action-btn" data-tooltip="Ver Análisis" data-id="${row.id_ticket}">
+                        
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            height="20"
+                                            viewBox="0 -960 960 960"
+                                            width="20"
+                                            fill="#d97706">
+
+                                        <path d="M320-200h300v-80H320v80Zm0-160h300v-80H320v80Zm0-160h160v-80H320v80Zm-80 
+                                        440q-33 0-56.5-23.5T160-200v-560q0-33 
+                                        23.5-56.5T240-840h360l200 220v440q0 
+                                        33-23.5 66.5T720-80H240Zm320-520v-160H240v600h480v-400H560Z"/>
                                         </svg>
+
                                     </button>
-                                    
-                                </div>
+                               </div>
                                 `;
                         } else {
                             return `
-                        <div class="flex gap-2">
-                            <button class="btn-view group action-btn" data-tooltip="Ver Ticket" data-id="${row.id_ticket}">
-                        
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="#d97706">
-                                <path d="M200-200h57l391-391-57-57-391 391v57Zm-80 
-                                80v-170l528-528q12-12 27-18t31-6q16 0 31 
-                                6t27 18l57 57q12 12 18 27t6 31q0 16-6 
-                                31t-18 27L290-120H120Zm640-584-56-56 56 
-                                56ZM591-620l-28-28 57 57-29-29Z"/>
-                                </svg>
-                            </button>
-                            <button class="btn-borrar group action-btn" data-tooltip="Borrar Ticket"
-                            data-id="${row.id_ticket}"
-                            data-message="¿Seguro que deseas borrar este elemento?">
-                            
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="#c20e1a">
-                                <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 
-                                33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 
-                                0h80v-360h-80v360Z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    `;
+                                <div class="flex gap-2">
+                                    <button class="btn-view group action-btn" data-tooltip="Ver Ticket" data-id="${row.id_ticket}">
+                                
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            height="20"
+                                            viewBox="0 0 512 512"
+                                            width="20"
+                                            fill="#15803d">
+
+                                        <!-- Lupa -->
+                                            <path d="M221 32C116 32 32 116 32 221s84 189 189 189c45 0 87-16 120-42l95 95c6 6 16 6 22 0l12-12c6-6 6-16 0-22l-95-95c26-33 42-75 42-120C410 116 326 32 221 32zm0 64c69 0 125 56 125 125s-56 125-125 125S96 290 96 221 152 96 221 96z"/>
+                                            
+                                            <!-- Signo + -->
+                                            <path d="M221 160c9 0 16 7 16 16v29h29c9 0 16 7 16 16s-7 16-16 16h-29v29c0 9-7 16-16 16s-16-7-16-16v-29h-29c-9 0-16-7-16-16s7-16 16-16h29v-29c0-9 7-16 16-16z"/>
+                                        </svg>
+                                    
+                                    </button>
+                                    <button class="btn-borrar group action-btn" data-tooltip="Borrar Ticket"
+                                    data-id="${row.id_ticket}"
+                                    data-message="¿Seguro que deseas borrar este elemento?">
+                                    
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="#c20e1a">
+                                        <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 
+                                        33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 
+                                        0h80v-360h-80v360Z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            `;
                         }
-
-
                     }
 
                 },);

@@ -379,6 +379,18 @@
                           </span>
                         </div>
                       </div>
+                      <!-- Ticket relacionado -->
+                      <div class="         ">
+                        <label
+                          class="mb-1.5  text-sm font-medium text-gray-700 dark:text-gray-400">
+                          Ticket relacionado
+                        </label>
+                        <input
+                          required
+                          id='ticketRel'
+                          type="text"
+                          class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
+                      </div>
                       <!-- Creado en tiempo -->
                       <div x-data="{ switcherToggle: true }" class="flex items-end">
                         <label
@@ -511,6 +523,12 @@
             </div>
 
             <!-- ====== Form Elements Section End -->
-            
+            <script>
+              window.id_empleado = <?php echo $_SESSION['id_empleado']; ?>;
+              window.usuario_nombre = "<?php echo $_SESSION['username']; ?>";
+              window.is_superuser = <?php echo $_SESSION['is_superuser'] ? 'true' : 'false'; ?>;
+              window.deptos_coordinador = <?php echo json_encode($_SESSION['deptos_coordinador'] ?? []); ?>;
+            </script>
+
 
             <script type="module" src="src/js/modules/tickets/editarTicket.js"></script>

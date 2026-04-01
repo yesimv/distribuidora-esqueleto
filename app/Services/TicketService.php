@@ -15,11 +15,16 @@ class TicketService
     {
         $this->model = new TicketModel();
     }
-    public function index()
+    public function index($tipo = null)
     {
         try {
 
-            $response = $this->model->index();
+            if (in_array('solicitados', $tipo)  && $_SESSION['is_superuser'] == 0) {
+
+                $response = $this->model->indexSol();
+            } else {
+                $response = $this->model->index();
+            }
 
             $departamentos = [];
             $listaTickets = [];
@@ -47,17 +52,25 @@ class TicketService
                     'area_afectada' => $registro['area_afectada'],
                     'canal_contacto' => $registro['canal_contacto'],
                     'create_date' => $registro['create_date'],
-                    'is_delete' => $registro['is_delete']
+                    'is_delete' => $registro['is_delete'],
+                    'id_ticket_relacionado' => $registro['id_ticket_relacionado']
                 ];
             };
-            $departamentos = array_unique(array_filter($departamentos));
-            $listaDept = ['departamentos' => implode(',', $departamentos)];
-            $extraData = $this->model->extraData($listaDept);
+            if (in_array('solicitados', $tipo)  && $_SESSION['is_superuser'] == 0) {
 
-            $empleados = $extraData['body']['resultado']['empleados_filtrados'];
-            $estatus = $extraData['body']['resultado']['estatus'];
-            
-            $listaConEstilos = $this->ticketTables($listaTickets, $empleados, $estatus);
+                $listaConEstilos = $this->ticketTables($listaTickets);
+            } else {
+
+                $departamentos = array_unique(array_filter($departamentos));
+                $listaDept = ['departamentos' => implode(',', $departamentos)];
+                $extraData = $this->model->extraData($listaDept);
+
+                $empleados = $extraData['body']['resultado']['empleados_filtrados'];
+                $estatus = $extraData['body']['resultado']['estatus'];
+
+                $listaConEstilos = $this->ticketTables($listaTickets, $empleados, $estatus);
+            }
+
 
             Logger::module('Tickets', 'Datos nuevos', $listaConEstilos);
             return $listaConEstilos;
@@ -65,6 +78,8 @@ class TicketService
             Logger::module('Tickets', 'Error en la funcion index al llenar el array ' . $e, [$response, $listaTickets]);
         }
     }
+
+
     static public function isCoordinador()
     {
         $ticketModel = new TicketModel();
@@ -88,7 +103,7 @@ class TicketService
 
             $idDepartamentoSol = null;
             $idEmpleadoSol = null;
-            $estacion = null;
+            $estacionInicial = null;
 
             if ($_SESSION['es_coordinador'] == true) {
                 if ($_SESSION['is_superuser'] == 1) {
@@ -107,7 +122,7 @@ class TicketService
                         }
                     }
                 }
-                $estacion = $registro['estacion'];
+                $estacionInicial = $registro['estacion'];
             } else {
                 foreach ($registro['departamento'] as $valor) {
                     if ($valor['id_departamento'] == $_SESSION['id_departamento']) {
@@ -123,7 +138,7 @@ class TicketService
                 foreach ($registro['estacion'] as $valor) {
 
                     if ($valor['id_estacion'] == $_SESSION['id_estacion']) {
-                        $estacion = $valor;
+                        $estacionInicial = $valor;
                     }
                 }
             };
@@ -133,7 +148,8 @@ class TicketService
             $opcionesFormulario = [
                 'departamento_sol' => $idDepartamentoSol,
                 'empleado_sol' => $idEmpleadoSol,
-                'estacion' => $estacion,
+                'estacion_inicial' => $estacionInicial,
+                'estacion' => $registro['estacion'],
                 'area_afectada' => $registro['area_afectada'],
                 'canal_contacto' => $registro['canal_contacto'],
                 'categoria' => $registro['categoria'],
@@ -157,10 +173,20 @@ class TicketService
     public function rangoFecha(array $data)
     {
         try {
+            
+            $fechas = $data;
+            
+            if (isset($data['solicitados'])  && $_SESSION['is_superuser'] == 0) {
+                unset($fechas['solicitados']);
+                
+                $response = $this->model->rangoFechaSol($fechas);
+                
+            } else {
+                $response = $this->model->rangoFecha($fechas);
+            }
 
-
-            $response = $this->model->rangoFecha($data);
-            $departamentos = [];
+            if($response['status'] == 200){
+                $departamentos = [];
             $listaTickets = [];
             foreach ($response['body']['resultado']  as $index => $registro) {
                 $departamentos[] = $registro['id_departamento_asi'];
@@ -187,40 +213,50 @@ class TicketService
                     'area_afectada' => $registro['area_afectada'],
                     'canal_contacto' => $registro['canal_contacto'],
                     'create_date' => $registro['create_date'],
-                    'is_delete' => $registro['is_delete']
+                    'is_delete' => $registro['is_delete'],
+                    'id_ticket_relacionado' => $registro['id_ticket_relacionado']
                 ];
             };
 
+            if (in_array('solicitados', $data)  && $_SESSION['is_superuser'] == 0) {
 
-            $departamentos = array_unique(array_filter($departamentos));
-            $listaDept = ['departamentos' => implode(',', $departamentos)];
-            /* $empleados = $this->model->empleados($listaDept);
-            $estatus = $this->model->estatus(); */
-            $extraData = $this->model->extraData($listaDept);
+                $listaConEstilos = $this->ticketTables($listaTickets);
+            } else {
 
-            $empleados = $extraData['body']['resultado']['empleados_filtrados'];
-            $estatus = $extraData['body']['resultado']['estatus'];
+                $departamentos = array_unique(array_filter($departamentos));
+                $listaDept = ['departamentos' => implode(',', $departamentos)];
+                $extraData = $this->model->extraData($listaDept);
 
+                $empleados = $extraData['body']['resultado']['empleados_filtrados'];
+                $estatus = $extraData['body']['resultado']['estatus'];
 
-            $listaConEstilos = $this->ticketTables($listaTickets, $empleados, $estatus);
+                $listaConEstilos = $this->ticketTables($listaTickets, $empleados, $estatus);
+            }
             Logger::module('Tickets', 'Datos nuevos', $listaConEstilos);
             return $listaConEstilos;
+            }
+            return $response;
+            
         } catch (\Exception $e) {
             Logger::module('Tickets', 'Error en la funcion index al llenar el array ' . $e, [$response, $listaTickets]);
         }
     }
+
     //agregar el efecto class en los datos obtenidos
 
     public function ticketTables($data, $empleados = null, $estatus = null)
     {
         //para preparar los empleados por departamento
         $empleadosPorDepto = [];
-        foreach ($empleados as $emp) {
-            $empleadosPorDepto[$emp['id_departamento']][] = [
-                'id_empleado' => $emp['id_empleado'],
-                'nombre' => $emp['descripcion']
-            ];
+        if (isset($empleados)) {
+            foreach ($empleados as $emp) {
+                $empleadosPorDepto[$emp['id_departamento']][] = [
+                    'id_empleado' => $emp['id_empleado'],
+                    'nombre' => $emp['descripcion']
+                ];
+            }
         }
+
         //
 
 
@@ -287,7 +323,10 @@ class TicketService
                 $offset = 2;
             }
 
-            $ticket['estatus_list'] = array_slice($estatus, $offset);
+            if (isset($estatus)) {
+                $ticket['estatus_list'] = array_slice($estatus, $offset);
+            }
+
 
             $ticket['id_usuario_actual'] = $_SESSION['id_empleado'];
         }

@@ -89,7 +89,7 @@
               </div>
             </div>
             <div class="overflow-x-auto pt-4">
-              <table id="tabla-tickets" class="display min-w-full"></table>
+              <table id="tabla-tickets-solicitados" class="display min-w-full"></table>
             </div>
 
           </div>
@@ -105,10 +105,12 @@
 
     <script src="src/js/lib/DataTables/datatables.js"></script>
     <script src="src/js/lib/DataTables/datatables.min.js"></script>
-
+  <!--   <script>
+      window.$ = window.jQuery = require('jquery');
+    </script> -->
     <script>
       window.id_empleado = <?php echo $_SESSION['id_empleado']; ?>;
       window.usuario_nombre = "<?php echo $_SESSION['username']; ?>";
     </script>
     <!-- <script type="module" src="src/js/modules/tickets/editar-ticket.js"></script> -->
-    <script type="module" src="src/js/modules/tickets/ticket.js"></script>
+    <script type="module" src="src/js/modules/tickets/ticketsSolicitados.js"></script>

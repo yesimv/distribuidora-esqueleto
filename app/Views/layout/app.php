@@ -411,6 +411,8 @@
         <!-- ===== Texto informativo que sigue al cursor ===== -->
         <div id="tooltip" class="pop-text"></div>
         <!-- ===== Page Wrapper End ===== -->
+
+        
         <?php
 
         include 'scripts.php';

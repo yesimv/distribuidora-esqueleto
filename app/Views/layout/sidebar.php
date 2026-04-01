@@ -161,7 +161,7 @@
                         href=<?php echo Config::get('app.base_url') . "/tickets" ?>
                         class="menu-dropdown-item group" x-cloak
                         :class="page === 'formElements' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
-                        Todos los tickets
+                        En mi departamento
                       </a>
                     </li>
                     <li>
@@ -170,6 +170,15 @@
                         class="menu-dropdown-item group" x-cloak
                         :class="page === 'formElements' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
                         Crear tickets
+                      </a>
+                    </li>
+                    <li>
+                      <a
+
+                        href=<?php echo Config::get('app.base_url') . "/tickets-solicitados" ?>
+                        class="menu-dropdown-item group" x-cloak
+                        :class="page === 'formElements' ? 'menu-dropdown-item-active' : 'menu-dropdown-item-inactive'">
+                        Tickets solicitados
                       </a>
                     </li>
                   </ul>

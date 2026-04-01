@@ -3411,6 +3411,10 @@ svg{-ms-touch-action:none;touch-action:none}image,text,.jvm-zoomin,.jvm-zoomout{
   white-space: nowrap;
 }
 .select-disable {
+  pointer-events: none;
+  opacity: 50% !important;
+}
+input.select-disable + .rounded-full {
   opacity: 50% !important;
 }
 .asignado {
@@ -3475,6 +3479,16 @@ th.dt-ordering-desc::after {
 #tabla-tickets td:nth-child(8),
 #tabla-tickets th:nth-child(9),
 #tabla-tickets td:nth-child(9) {
+  min-width: 140px;
+}
+#tabla-tickets-solicitados th:nth-child(2),
+#tabla-tickets-solicitados td:nth-child(2) {
+  min-width: 230px;
+}
+#tabla-tickets-solicitados th:nth-child(8),
+#tabla-tickets-solicitados td:nth-child(8),
+#tabla-tickets-solicitados th:nth-child(9),
+#tabla-tickets-solicitados td:nth-child(9) {
   min-width: 140px;
 }
 div.dt-buttons .dt-button, div.dt-search .dt-input {

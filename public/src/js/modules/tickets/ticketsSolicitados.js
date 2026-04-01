@@ -25,9 +25,11 @@ const configFecha = {
 };
 
 document.addEventListener("DOMContentLoaded", async function () {
-    if (document.querySelector('#tabla-tickets')) {
+    if (document.querySelector('#tabla-tickets-solicitados')) {
+
         await tablaTickets();
     }
+
     fp('#fch-fin-ticket', configFecha);
     fp('#fch-inicio-ticket', configFecha);
     eventos();
@@ -36,10 +38,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 const eventos = () => {
 
-    if (!document.querySelector('#tabla-tickets')) {
+    if (!document.querySelector('#tabla-tickets-solicitados')) {
         return;
     }
-    const tabla = document.querySelector('#tabla-tickets');
+    const tabla = document.querySelector('#tabla-tickets-solicitados');
     const btn = document.querySelector('#btn-filtro-fecha');
     const btnClose = document.querySelector('#msg-info-ticket-close');
 
@@ -73,7 +75,7 @@ const eventos = () => {
 
 
 
-            abrirEditarTab(id);
+            abrirEditarSol(id);
 
 
         }
@@ -231,7 +233,7 @@ const eventos = () => {
 }
 
 
-async function abrirEditarTab(id) {
+async function abrirEditarSol(id) {
 
     const tab = document.getElementById('editar');
 
@@ -272,7 +274,7 @@ const configTable = () => {
     ];
 }
 
-export const tablaTickets = async (fechas = null, solicitudes = null) => {
+export const tablaTickets = async (fechas = null) => {
     const config = configTable();
     const extras = ['AccionesTicket'];
 
@@ -283,13 +285,14 @@ export const tablaTickets = async (fechas = null, solicitudes = null) => {
 
         dataSource = await request('/api/ticket-fecha', 'POST', fechas);
     } else {
+        const data = ['solicitados'];
 
-        dataSource = await request('/api/tickets', 'POST');
+        dataSource = await request('/api/tickets', 'POST', data);
     }
 
     if (dataSource.status == 400) {
         console.warn("No hay datos");
-        $('#tabla-tickets').html(`
+        $('#tabla-tickets-solicitados').html(`
         <tr>
             <td colspan="10" class="text-center">
                 No hay registros disponibles
@@ -304,10 +307,9 @@ export const tablaTickets = async (fechas = null, solicitudes = null) => {
 
         return; // 🚨 NO inicializar DataTable
     } else {
-        $('#tabla-tickets').html(``);
-
+        $('#tabla-tickets-solicitados').html(``);
     }
-    app.dt = await tabla('#tabla-tickets', config, dataSource, extras);
+    app.dt = await tabla('#tabla-tickets-solicitados', config, dataSource, extras);
 
 
 
@@ -322,10 +324,11 @@ const filtrarPorFecha = async () => {
     const fFinal = document.getElementById('fch-fin-ticket').value;
     const fechas = {
         'fchInicio': fInicio,
-        'fchFinal': fFinal
+        'fchFinal': fFinal,
+        'solicitados': 'solicitados'
     };
 
-    if (document.querySelector('#tabla-tickets')) {
+    if (document.querySelector('#tabla-tickets-solicitados')) {
         await tablaTickets(fechas);
     }
 }
@@ -345,7 +348,7 @@ async function borrarTicket(id) {
             });
 
             //   recargar tabla
-            if (document.querySelector('#tabla-tickets')) {
+            if (document.querySelector('#tabla-tickets-solicitados')) {
                 await tablaTickets();
             }
 
@@ -372,7 +375,6 @@ async function asignarTicket(data, rowElement) {
 
         document.getElementById('loader-overlay').classList.add('hidden');
         const response = await request('/api/asignar-ticket', 'POST', data);
-
 
         if (response.status == 200) {
 
@@ -470,7 +472,7 @@ async function actualizarEstatus(data, rowElement) {
                 tipo: "success"
             });
             //   recargar tabla
-            if (document.querySelector('#tabla-tickets')) {
+            if (document.querySelector('#tabla-tickets-solicitados')) {
                 await tablaTickets();
             }
 

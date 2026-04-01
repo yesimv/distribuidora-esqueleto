@@ -3,6 +3,24 @@ import { mostrarMensaje, abrirModalConfirm, initModal } from "../../core/modal.j
 let idTicket = null;
 let empleadosGlobal = [];
 let id = null;
+const campos = {
+    titulo: document.getElementById('tituloAreaEdit'),
+    descripcion: document.getElementById('descripcionArea'),
+    comentarios: document.getElementById('comentariosArea'),
+    departamento: document.getElementById('departamentoSelect'),
+    empleado: document.getElementById('empleadoSelect'),
+
+    tipo: document.getElementById('tipoSelect'),
+    categoria: document.getElementById('categoriaSelect'),
+    area: document.getElementById('areaSelect'),
+    nivel: document.getElementById('nivelSelect'),
+    prioridad: document.getElementById('prioridadSelect'),
+    canal: document.getElementById('canalSelect'),
+    entiempo: document.getElementById('enTiempo'),
+    ticketRel: document.getElementById('ticketRel'),
+    estacion: document.getElementById('estacionSelect')
+};
+
 document.addEventListener("DOMContentLoaded", async function () {
     //decodifica el link mandado para obtenero el id
     const params = new URLSearchParams(window.location.search);
@@ -13,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
 
-    
+
 
 
 
@@ -212,6 +230,7 @@ async function cargarTicket(id) {
 
         if (response.status == 200) {
             const ticket = response.body.resultado;
+
             document.getElementById('loader-overlay').classList.remove('hidden');
             llenarFormulario(ticket);
 
@@ -232,6 +251,7 @@ function llenarFormulario(ticket) {
     idTicket = ticket.id_ticket;
     document.getElementById('departamentoSolInput').value = ticket.departamento_solicitante;
     document.getElementById('empleadoSolInput').value = ticket.empleado_solicitante;
+    document.getElementById('ticketRel').value = ticket.id_ticket_realcionado ? null : '';
 
     document.getElementById('estacionSelect').value = ticket.id_estacion;
     document.getElementById('tituloAreaEdit').value = ticket.titulo;
@@ -247,10 +267,93 @@ function llenarFormulario(ticket) {
     document.getElementById('enTiempo').checked = ticket.se_creo_en_tiempo == 1;
     document.getElementById('descripcionArea').value = ticket.descripcion;
     document.getElementById('comentariosArea').value = ticket.comentarios;
+
+
+    //confirma los permisos del usuario logeado
+    aplicarPermisos(ticket);
+
     document.getElementById('loader-overlay').classList.add('hidden');
+
+
 }
+// detecta el usuario logeado y limita permisos de edicion acorde al cargo
+function aplicarPermisos(ticket) {
+
+    bloquearTodo();
+    const idUser = Number(window.id_empleado);
+    const esSolicitante = idUser === Number(ticket.id_empleado_sol);
+    const esAsignado = idUser === Number(ticket.id_empleado_asi);
+    const deptos = (window.deptos_coordinador || []).map(Number);
+    const esCoordSolicitante = deptos.includes(Number(ticket.id_departamento_sol));
+    const esCoordAsignado = deptos.includes(Number(ticket.id_departamento_asi));
+    const esSuper = Boolean(window.is_superuser);
 
 
+
+    if (esSuper) return habilitarTodo()
+    if (esAsignado) {
+        if (esSolicitante) return permisosDobles();
+        return permisosAsignado();
+    }
+    if (esSolicitante || esCoordSolicitante) return permisosSolicitante();
+    if (esCoordAsignado) return permisosCoordinador();
+    // ❌ default
+    bloquearTodo();
+
+
+}
+//habilita o deshabilita el campo del formulario
+function setDisabled(element, estado) {
+    element.disabled = estado;
+
+    if (estado) {
+        element.classList.add('select-disable');
+    } else {
+        element.classList.remove('select-disable');
+    }
+}
+//manda  a  habilitar todos los campos del formulario
+function habilitarTodo() {
+    Object.values(campos).forEach(el => setDisabled(el, false));
+}
+//manda  a  deshabilitar todos los campos del formulario
+function bloquearTodo() {
+    Object.values(campos).forEach(el => setDisabled(el, true));
+}
+//aplica permisos de usuario asignado 
+function permisosAsignado() {
+    habilitarTodo();
+
+    // ❌ restricciones
+    setDisabled(campos.descripcion, true);
+    setDisabled(campos.departamento, true);
+    setDisabled(campos.empleado, true);
+
+}
+//aplica permisos de usuario asignado y solicitante
+function permisosDobles() {
+    habilitarTodo();
+
+    // ❌ restricciones
+    setDisabled(campos.departamento, true);
+    setDisabled(campos.empleado, true);
+
+}
+//aplica permisos de solicitante 
+function permisosSolicitante() {
+    bloquearTodo();
+    
+    // ✔ solo estos
+    setDisabled(campos.descripcion, false);
+    setDisabled(campos.titulo, false);
+}
+//aplica permisos de coordinador asignado 
+function permisosCoordinador() {
+    habilitarTodo();
+
+    // ❌ no puede editar descripción
+    setDisabled(campos.descripcion, true);
+}
 //se manda toda la data del formulario para crear un ticket en la base de datos
 const editarTicket = async () => {
 
@@ -259,6 +362,7 @@ const editarTicket = async () => {
 
     const id_estacion = document.getElementById("estacionSelect").value;
     const titulo = document.getElementById('tituloAreaEdit').value;
+    const id_ticket_relacionado = document.getElementById('ticketRel').value;
     //const id_estatus = document.getElementById("estatusSelect").value;
     const id_departamento_asi = document.getElementById("departamentoSelect").value;
     const id_empleado_asi = document.getElementById("empleadoSelect").value;
@@ -290,7 +394,8 @@ const editarTicket = async () => {
         id_canal_contacto,
         se_creo_en_tiempo,
         descripcion,
-        comentarios
+        comentarios,
+        id_ticket_relacionado
     };
 
 

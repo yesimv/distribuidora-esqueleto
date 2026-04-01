@@ -27,6 +27,19 @@ class TicketModel
                 ];
         }
     }
+    public function indexSol()
+    {
+        try {
+            
+            $response = $this->api->request('GET', 'tickets/solicitudes');
+            return $response;
+        } catch (Exception $e) {
+            return [
+                'success'=> false,
+                'message'=> 'Error al conectarse a la API tickets: '. $e
+                ];
+        }
+    }
     public function isCoordinador()
     {
         try {
@@ -49,7 +62,26 @@ class TicketModel
             $fechaFinal = $data['fchFinal'];
             $rangoFechas = strval('tickets/date?fchInicio='.$fechaInicio.'&fchFinal='.$fechaFinal);
             
-                //$rangoFechas = 'tickets/date?fchInicio=2026-01-01&fchFinal=2026-03-11';
+            
+            $response = $this->api->request('GET', $rangoFechas);
+            return $response;
+        } catch (Exception $e) {
+            return [
+                'success'=> false,
+                'message'=> 'Error al conectarse a la API tickets: '. $e
+                ];
+        }
+    }
+    public function rangoFechaSol(array $data)
+    {
+        try {
+            
+            
+            $fechaInicio = $data['fchInicio'];
+            $fechaFinal = $data['fchFinal'];
+            $rangoFechas = strval('tickets/date-solicitudes?fchInicio='.$fechaInicio.'&fchFinal='.$fechaFinal);
+            
+            
             $response = $this->api->request('GET', $rangoFechas);
             return $response;
         } catch (Exception $e) {
@@ -204,7 +236,7 @@ class TicketModel
     {
         try {
             
-            $response = $this->api->request('POST', 'tickets/update?id='.$idTicket,$data);
+            $response = $this->api->request('POST', 'tickets/auto-asignar?id='.$idTicket,$data);
             return $response;
         } catch (Exception $e) {
             return [
