@@ -168,9 +168,10 @@ class TicketModel
     public function extraData(array $data)
     {
         try {
+            //peticiones GET
+            $query = http_build_query($data);
             
-            
-            $response = $this->api->request('GET', 'tickets/get-extra-data',$data);
+            $response = $this->api->request('GET', 'tickets/get-extra-data?'.$query);
             return $response;
         } catch (Exception $e) {
             return [

@@ -37,6 +37,7 @@ class ApiClient
         $url = rtrim($this->baseUrl, '/') . '/' . ltrim($endpoint, '/');
         //inicializa la conexion
         $ch = curl_init();
+        
         //se define como sera la peticion
         curl_setopt_array($ch, [
             //endpoint al que se envia la peticion

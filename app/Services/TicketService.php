@@ -25,6 +25,7 @@ class TicketService
             } else {
                 $response = $this->model->index();
             }
+            
 
             $departamentos = [];
             $listaTickets = [];
@@ -63,8 +64,9 @@ class TicketService
 
                 $departamentos = array_unique(array_filter($departamentos));
                 $listaDept = ['departamentos' => implode(',', $departamentos)];
+                
                 $extraData = $this->model->extraData($listaDept);
-
+              
                 $empleados = $extraData['body']['resultado']['empleados_filtrados'];
                 $estatus = $extraData['body']['resultado']['estatus'];
 

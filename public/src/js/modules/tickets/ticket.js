@@ -287,6 +287,8 @@ export const tablaTickets = async (fechas = null, solicitudes = null) => {
         dataSource = await request('/api/tickets', 'POST');
     }
 
+    console.log(dataSource);
+    
     if (dataSource.status == 400) {
         console.warn("No hay datos");
         $('#tabla-tickets').html(`
